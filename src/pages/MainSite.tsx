@@ -143,8 +143,9 @@ const MainSite = () => {
 
       {/* Main Content */}
       <main className="flex-grow">
-        {/* Hero Slider */}
-        <section className="overflow-hidden">
+        {/* Hero Slider + Stats */}
+        <section className="relative">
+          <div className="overflow-hidden">
           {slides.filter(s => s.image?.trim()).length > 0 ? (
             <Swiper
               modules={[Autoplay, Pagination, EffectFade]}
@@ -154,7 +155,7 @@ const MainSite = () => {
               pagination={{ clickable: true }}
               autoplay={{ delay: 5000, disableOnInteraction: false }}
               loop
-              className="h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px]"
+              className="h-[380px] sm:h-[450px] md:h-[520px] lg:h-[580px]"
             >
               {slides.filter(s => s.image?.trim()).map((slide) => (
                 <SwiperSlide key={slide._id} className="overflow-hidden">
@@ -185,9 +186,11 @@ const MainSite = () => {
               </div>
             </div>
           )}
+          </div>
+          <div className="relative z-10 -mt-14 md:-mt-16 px-4 md:px-8 pb-4">
+            <Stats />
+          </div>
         </section>
-
-        <Stats />
         <Features />
 
         {/* Tanıtım Videosu */}

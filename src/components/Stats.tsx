@@ -9,9 +9,9 @@ const stats = [
 
 const Stats = () => {
   return (
-    <section className="bg-primary py-12 md:py-16">
+    <section className="bg-primary/95 backdrop-blur-sm shadow-xl py-8 md:py-10 rounded-2xl border border-white/10">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
           {stats.map((stat, index) => (
             <div key={index} className="text-center text-white">
               <stat.icon size={40} className="mx-auto mb-3 text-secondary" />
