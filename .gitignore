@@ -1,0 +1,23 @@
+# Bağımlılıklar
+node_modules/
+
+# Ortam değişkenleri (şifreler, API anahtarları)
+.env
+backend/.env
+*.env.local
+
+# Build çıktıları
+dist/
+build/
+
+# Loglar
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
