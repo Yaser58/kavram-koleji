@@ -8,8 +8,8 @@ export const fallbackBranches = [
 ]
 
 export const fallbackSlides = [
-  { _id: '1', title: 'Akademik Başarıda Lider Kurum', subtitle: 'YKS ve LGS\'de Üstün Başarı', image: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1600&h=900&fit=crop', link: '/basarilarimiz' },
-  { _id: '2', title: 'Kavram Koleji ile Geleceğe Hazırlanın', subtitle: 'Yarım Asrı Aşan Eğitim Tecrübesi', image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1600&h=900&fit=crop', link: '/kampusler' },
+  { _id: '1', title: 'Kavram Koleji ile Geleceğe Hazırlanın', subtitle: 'Yarım Asrı Aşan Eğitim Tecrübesi', image: 'https://images.unsplash.com/photo-1434030216415-6bf8185ea1e3?w=1600&h=900&fit=crop', link: '/kampusler' },
+  { _id: '2', title: 'Akademik Başarıda Lider Kurum', subtitle: 'YKS ve LGS\'de Üstün Başarı', image: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1600&h=900&fit=crop', link: '/basarilarimiz' },
   { _id: '3', title: '2026-2027 Kayıtları Başladı', subtitle: 'Avantajlı Erken Kayıt Fırsatları', image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1600&h=900&fit=crop', link: '/kayit' },
 ]
 

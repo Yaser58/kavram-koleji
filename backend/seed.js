@@ -287,7 +287,7 @@ async function seed() {
     {
       title: 'Kavram Koleji ile Geleceğe Hazırlanın',
       subtitle: 'Yarım Asrı Aşan Eğitim Tecrübesi',
-      image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1600&h=900&fit=crop',
+      image: 'https://images.unsplash.com/photo-1434030216415-6bf8185ea1e3?w=1600&h=900&fit=crop',
       link: '/kampusler',
       order: 1,
       active: true

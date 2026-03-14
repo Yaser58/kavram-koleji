@@ -16,7 +16,7 @@ router.post('/contact', async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }) }
 })
 
-const DEFAULT_SLIDER_IMAGE = 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1600&h=900&fit=crop'
+const DEFAULT_SLIDER_IMAGE = 'https://images.unsplash.com/photo-1434030216415-6bf8185ea1e3?w=1600&h=900&fit=crop'
 
 // Ana site slider
 router.get('/slider', (req, res) => {

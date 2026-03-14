@@ -32,9 +32,15 @@ body {
   background: #c8a45c !important;
 }
 
-/* Slider: Her slide kendi içinde izole, geçişte yazı üst üste gelmesin */
-.swiper-slide {
-  isolation: isolate;
+/* Slider: Sadece aktif slide'ın yazısı görünsün, geçişte üst üste gelmesin */
+.swiper-slide:not(.swiper-slide-active) .hero-slide-content {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+.swiper-slide-active .hero-slide-content {
+  visibility: visible;
+  opacity: 1;
 }
 
 .gradient-overlay {

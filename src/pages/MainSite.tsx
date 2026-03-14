@@ -13,7 +13,7 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/effect-fade'
 
-const FALLBACK_SLIDER_IMAGE = 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1600&h=900&fit=crop'
+const FALLBACK_SLIDER_IMAGE = 'https://images.unsplash.com/photo-1434030216415-6bf8185ea1e3?w=1600&h=900&fit=crop'
 
 interface BranchInfo { _id: string; name: string; slug: string; city: string; logo?: string }
 interface MainSlide { _id: string; title: string; subtitle: string; image: string; link: string }
@@ -161,7 +161,7 @@ const MainSite = () => {
                   <div className="relative h-full w-full overflow-hidden">
                     <img src={slide.image || FALLBACK_SLIDER_IMAGE} alt={slide.title} className="absolute inset-0 w-full h-full object-cover object-center" onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_SLIDER_IMAGE }} />
                     <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(15,27,45,0.92)_0%,rgba(15,27,45,0.6)_35%,transparent_65%)]" />
-                    <div className="absolute inset-0 flex items-center z-10">
+                    <div className="absolute inset-0 flex items-center z-10 hero-slide-content">
                       <div className="container mx-auto px-4">
                         <div className="max-w-2xl">
                           {slide.subtitle && <p className="text-secondary font-semibold mb-3 text-lg">{slide.subtitle}</p>}
