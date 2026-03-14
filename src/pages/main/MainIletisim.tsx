@@ -1,11 +1,18 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { MapPin, Phone, Mail, Send, CheckCircle } from 'lucide-react'
 import MainWrapper from '../../components/MainWrapper'
 import PageBanner from '../../components/PageBanner'
 import api from '../../lib/api'
 
+interface BranchInfo { _id: string; name: string; slug: string }
+
 const MainIletisim = () => {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '', kvkk: false })
+  const [branches, setBranches] = useState<BranchInfo[]>([])
+  const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '', campus: '', kvkk: false })
+
+  useEffect(() => {
+    api.get('/branches').then(setBranches).catch(() => [])
+  }, [])
   const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
 
@@ -36,6 +43,15 @@ const MainIletisim = () => {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Kampüs Seçimi</label>
+                    <select value={form.campus} onChange={e => setForm({...form, campus: e.target.value})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition">
+                      <option value="">Kampüs seçiniz (opsiyonel)</option>
+                      {branches.map(b => (
+                        <option key={b._id} value={b._id}>{b.name}</option>
+                      ))}
+                    </select>
+                  </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <input type="text" placeholder="Adınız Soyadınız *" required value={form.name} onChange={e => setForm({...form, name: e.target.value})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition" />
                     <input type="email" placeholder="E-posta Adresiniz *" required value={form.email} onChange={e => setForm({...form, email: e.target.value})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition" />

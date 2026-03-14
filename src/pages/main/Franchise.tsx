@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { Phone, Send, CheckCircle, Building2, GraduationCap, TrendingUp, Shield } from 'lucide-react'
 import MainWrapper from '../../components/MainWrapper'
 import PageBanner from '../../components/PageBanner'
+import { turkishCities } from '../../data/turkishCities'
 
 const benefits = [
   { icon: GraduationCap, title: 'Köklü Eğitim Tecrübesi', desc: '1974\'den bu yana yarım asrı aşan eğitim birikimi ve kanıtlanmış başarı.' },
@@ -17,7 +18,8 @@ const Franchise = () => {
   const isOkul = location.pathname.includes('/okul')
   const franchiseType = isKurs ? 'Kurs' : isOkul ? 'Okul' : ''
   
-  const [form, setForm] = useState({ name: '', email: '', phone: '', city: '', message: '', type: franchiseType || 'Okul' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', city: '', district: '', message: '', type: franchiseType || 'Okul' })
+  const selectedCity = turkishCities.find(c => c.name === form.city)
   const [sent, setSent] = useState(false)
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -91,7 +93,26 @@ const Franchise = () => {
                 <input type="email" placeholder="E-posta *" required value={form.email} onChange={e => setForm({...form, email: e.target.value})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition" />
                 <input type="tel" placeholder="Telefon *" required value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition" />
               </div>
-              <input type="text" placeholder="Şehir *" required value={form.city} onChange={e => setForm({...form, city: e.target.value})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">İl *</label>
+                <select required value={form.city} onChange={e => setForm({...form, city: e.target.value, district: ''})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition">
+                  <option value="">İl seçiniz</option>
+                  {turkishCities.map(c => (
+                    <option key={c.name} value={c.name}>{c.name}</option>
+                  ))}
+                </select>
+              </div>
+              {selectedCity && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">İlçe</label>
+                  <select value={form.district} onChange={e => setForm({...form, district: e.target.value})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition">
+                    <option value="">İlçe seçiniz (opsiyonel)</option>
+                    {selectedCity.districts.map(d => (
+                      <option key={d} value={d}>{d}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
               <textarea placeholder="Mesajınız" rows={4} value={form.message} onChange={e => setForm({...form, message: e.target.value})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition resize-none" />
               <button type="submit" className="w-full bg-secondary text-white py-3 rounded-full font-semibold hover:bg-primary transition flex items-center justify-center gap-2">
                 <Send size={18} /> Başvuru Gönder

@@ -61,7 +61,7 @@ const Kampusler = () => {
                     <div className="flex flex-col md:flex-row">
                       {/* Image */}
                       <div className="md:w-64 h-48 md:h-auto flex-shrink-0 bg-gray-100">
-                        <img src={getBranchImageSrc(kampus)} alt={kampus.name} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).src = BRANCH_IMAGE_PLACEHOLDER }} />
+                        <img src={getBranchImageSrc(kampus)} alt={kampus.name} className="w-full h-full object-contain object-center" onError={(e) => { (e.target as HTMLImageElement).src = BRANCH_IMAGE_PLACEHOLDER }} />
                       </div>
                       {/* Content */}
                       <div className="flex-1 p-6">

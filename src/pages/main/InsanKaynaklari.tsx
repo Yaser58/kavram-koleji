@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Send, CheckCircle, Heart, Users, BookOpen, Lightbulb } from 'lucide-react'
+import { useState, useRef } from 'react'
+import { Send, CheckCircle, Heart, Users, BookOpen, Lightbulb, Upload, FileText, Briefcase } from 'lucide-react'
 import MainWrapper from '../../components/MainWrapper'
 import PageBanner from '../../components/PageBanner'
 
@@ -11,7 +11,13 @@ const values = [
 ]
 
 const InsanKaynaklari = () => {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', position: '', message: '' })
+  const cvInputRef = useRef<HTMLInputElement>(null)
+  const photoInputRef = useRef<HTMLInputElement>(null)
+  const [form, setForm] = useState({
+    name: '', email: '', phone: '', position: '', message: '',
+    education: '', experience: '', languages: '', reference: '', referencePhone: '',
+    cvFile: null as File | null, photoFile: null as File | null
+  })
   const [sent, setSent] = useState(false)
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -71,6 +77,30 @@ const InsanKaynaklari = () => {
                 <input type="tel" placeholder="Telefon *" required value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition" />
               </div>
               <input type="text" placeholder="Başvurulan Pozisyon *" required value={form.position} onChange={e => setForm({...form, position: e.target.value})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition" />
+              <input type="text" placeholder="Eğitim Durumu (Okul, Bölüm, Yıl)" value={form.education} onChange={e => setForm({...form, education: e.target.value})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition" />
+              <textarea placeholder="İş Tecrübesi (Kurum, Pozisyon, Tarih)" rows={3} value={form.experience} onChange={e => setForm({...form, experience: e.target.value})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition resize-none" />
+              <input type="text" placeholder="Yabancı Diller ve Seviye" value={form.languages} onChange={e => setForm({...form, languages: e.target.value})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">CV Yükle (PDF) *</label>
+                  <input type="file" ref={cvInputRef} accept=".pdf,.doc,.docx" onChange={e => setForm({...form, cvFile: e.target.files?.[0] || null})} className="hidden" />
+                  <button type="button" onClick={() => cvInputRef.current?.click()} className="w-full px-4 py-3 border border-gray-200 rounded-xl flex items-center gap-2 text-gray-600 hover:border-secondary transition">
+                    <FileText size={20} className="text-secondary" /> {form.cvFile ? form.cvFile.name : 'Dosya Seç'}
+                  </button>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Fotoğraf</label>
+                  <input type="file" ref={photoInputRef} accept="image/*" onChange={e => setForm({...form, photoFile: e.target.files?.[0] || null})} className="hidden" />
+                  <button type="button" onClick={() => photoInputRef.current?.click()} className="w-full px-4 py-3 border border-gray-200 rounded-xl flex items-center gap-2 text-gray-600 hover:border-secondary transition">
+                    <Upload size={20} className="text-secondary" /> {form.photoFile ? form.photoFile.name : 'Fotoğraf Seç'}
+                  </button>
+                </div>
+              </div>
+              <div className="border-t border-gray-200 pt-5">
+                <h4 className="font-semibold text-primary mb-3 flex items-center gap-2"><Briefcase size={18} /> Referans Bilgisi</h4>
+                <input type="text" placeholder="Referans Adı Soyadı" value={form.reference} onChange={e => setForm({...form, reference: e.target.value})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition mb-3" />
+                <input type="tel" placeholder="Referans Telefonu" value={form.referencePhone} onChange={e => setForm({...form, referencePhone: e.target.value})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition" />
+              </div>
               <textarea placeholder="Kendinizi kısaca tanıtın" rows={4} value={form.message} onChange={e => setForm({...form, message: e.target.value})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition resize-none" />
               <button type="submit" className="w-full bg-primary text-white py-3 rounded-full font-semibold hover:bg-secondary transition flex items-center justify-center gap-2">
                 <Send size={18} /> Başvuru Gönder

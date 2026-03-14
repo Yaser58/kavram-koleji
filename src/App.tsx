@@ -23,6 +23,13 @@ import MainKayit from './pages/main/MainKayit'
 import KVKK from './pages/main/KVKK'
 import KursMerkezleri from './pages/main/KursMerkezleri'
 import Egitim from './pages/main/Egitim'
+import Tarihcemiz from './pages/main/Tarihcemiz'
+import YonetimKadrosu from './pages/main/YonetimKadrosu'
+import KurumsalKimlik from './pages/main/KurumsalKimlik'
+import EgitimAnaokulu from './pages/main/EgitimAnaokulu'
+import EgitimIlkokul from './pages/main/EgitimIlkokul'
+import EgitimOrtaokul from './pages/main/EgitimOrtaokul'
+import EgitimLise from './pages/main/EgitimLise'
 
 function App() {
   return (
@@ -38,6 +45,7 @@ function App() {
                       <Routes>
                         <Route path="/" element={<MainSite />} />
                         <Route path="/kampusler" element={<Kampusler />} />
+                        <Route path="/kampuslerimiz" element={<Kampusler />} />
                         <Route path="/haberler" element={<Haberler />} />
                         <Route path="/haberler/:slug" element={<HaberDetay />} />
                         <Route path="/basarilarimiz" element={<Basarilarimiz />} />
@@ -48,9 +56,17 @@ function App() {
                         <Route path="/franchise/kurs" element={<Franchise />} />
                         <Route path="/insan-kaynaklari" element={<InsanKaynaklari />} />
                         <Route path="/kayit" element={<MainKayit />} />
+                        <Route path="/kavrama-kayit" element={<MainKayit />} />
                         <Route path="/kvkk" element={<KVKK />} />
                         <Route path="/kurs-merkezleri" element={<KursMerkezleri />} />
                         <Route path="/egitim" element={<Egitim />} />
+                        <Route path="/egitim/anaokulu" element={<EgitimAnaokulu />} />
+                        <Route path="/egitim/ilkokul" element={<EgitimIlkokul />} />
+                        <Route path="/egitim/ortaokul" element={<EgitimOrtaokul />} />
+                        <Route path="/egitim/lise" element={<EgitimLise />} />
+                        <Route path="/tarihcemiz" element={<Tarihcemiz />} />
+                        <Route path="/yonetim-kadrosu" element={<YonetimKadrosu />} />
+                        <Route path="/kurumsal-kimlik" element={<KurumsalKimlik />} />
                         <Route path="/giris" element={<Login />} />
                         <Route path="/super-admin" element={<SuperAdmin />} />
                         <Route path="/:branchSlug/*" element={<BranchSite />} />

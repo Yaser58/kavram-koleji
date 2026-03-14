@@ -145,8 +145,14 @@ const MainWrapper = ({ children }: { children: ReactNode }) => {
               <h4 className="font-bold text-lg mb-6">Hızlı Bağlantılar</h4>
               <ul className="space-y-3">
                 {navLinks.map(link => (<li key={link.to}><Link to={link.to} className="text-gray-400 hover:text-secondary transition text-sm">{link.label}</Link></li>))}
+                <li><Link to="/tarihcemiz" className="text-gray-400 hover:text-secondary transition text-sm">Tarihçemiz</Link></li>
+                <li><Link to="/yonetim-kadrosu" className="text-gray-400 hover:text-secondary transition text-sm">Yönetim Kadrosu</Link></li>
+                <li><Link to="/kurumsal-kimlik" className="text-gray-400 hover:text-secondary transition text-sm">Kurumsal Kimlik</Link></li>
                 <li><Link to="/franchise" className="text-gray-400 hover:text-secondary transition text-sm">Franchise</Link></li>
                 <li><Link to="/insan-kaynaklari" className="text-gray-400 hover:text-secondary transition text-sm">İnsan Kaynakları</Link></li>
+                <li><a href="https://kavramkurs.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-secondary transition text-sm">Kavram Kurs</a></li>
+                <li><a href="https://dijital.kavram.k12.tr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-secondary transition text-sm">Kavram Dijital Okul</a></li>
+                <li><a href="https://store.kavram.k12.tr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-secondary transition text-sm">Kavram Store</a></li>
               </ul>
             </div>
             <div>
@@ -157,10 +163,11 @@ const MainWrapper = ({ children }: { children: ReactNode }) => {
                 <li className="flex items-center gap-3"><Mail size={18} className="text-secondary flex-shrink-0" /><a href="mailto:info@kavram.com.tr" className="text-gray-400 hover:text-secondary transition text-sm">info@kavram.com.tr</a></li>
               </ul>
               <div className="flex gap-3 mt-6">
-                <a href="https://facebook.com/kavramkoleji" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-secondary transition"><Facebook size={18} /></a>
-                <a href="https://instagram.com/kavramkoleji" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-secondary transition"><Instagram size={18} /></a>
-                <a href="https://youtube.com/kavramkoleji" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-secondary transition"><Youtube size={18} /></a>
-                <a href="https://twitter.com/kavramkoleji" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-secondary transition"><Twitter size={18} /></a>
+                <a href="https://facebook.com/kavramkoleji" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-secondary transition" aria-label="Facebook"><Facebook size={18} /></a>
+                <a href="https://instagram.com/kavramkoleji" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-secondary transition" aria-label="Instagram"><Instagram size={18} /></a>
+                <a href="https://youtube.com/@kavramkoleji" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-secondary transition" aria-label="YouTube"><Youtube size={18} /></a>
+                <a href="https://twitter.com/kavramkoleji" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-secondary transition" aria-label="Twitter"><Twitter size={18} /></a>
+                <a href="https://linkedin.com/company/kavramkoleji" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-secondary transition" aria-label="LinkedIn"><svg className="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
               </div>
             </div>
           </div>

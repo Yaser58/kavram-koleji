@@ -1,4 +1,5 @@
-import { Trophy, TrendingUp, Users, Award, Star, Target } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Trophy, TrendingUp, Users, Award, Star, Target, ChevronRight } from 'lucide-react'
 import MainWrapper from '../../components/MainWrapper'
 import PageBanner from '../../components/PageBanner'
 
@@ -39,9 +40,18 @@ const Basarilarimiz = () => {
       </section>
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-primary mb-4">Başarı Alanlarımız</h2>
-            <p className="text-gray-500 max-w-2xl mx-auto">Kavram Koleji olarak akademik, sportif ve kültürel alanlarda öğrencilerimizin başarılarıyla gurur duyuyoruz.</p>
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6 mb-12">
+            <div className="text-center md:text-left">
+              <h2 className="text-2xl md:text-3xl font-bold text-primary mb-4">Başarı Alanlarımız</h2>
+              <p className="text-gray-500 max-w-2xl">Kavram Koleji olarak akademik, sportif ve kültürel alanlarda öğrencilerimizin başarılarıyla gurur duyuyoruz.</p>
+            </div>
+            <div className="flex flex-wrap justify-center gap-3">
+              <Link to="/tarihcemiz" className="inline-flex items-center gap-1 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 hover:border-secondary hover:text-secondary transition">Tarihçemiz <ChevronRight size={14} /></Link>
+              <Link to="/yonetim-kadrosu" className="inline-flex items-center gap-1 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 hover:border-secondary hover:text-secondary transition">Yönetim Kadrosu <ChevronRight size={14} /></Link>
+              <Link to="/kurumsal-kimlik" className="inline-flex items-center gap-1 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 hover:border-secondary hover:text-secondary transition">Kurumsal Kimlik <ChevronRight size={14} /></Link>
+              <Link to="/franchise" className="inline-flex items-center gap-1 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 hover:border-secondary hover:text-secondary transition">Franchise <ChevronRight size={14} /></Link>
+              <Link to="/insan-kaynaklari" className="inline-flex items-center gap-1 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 hover:border-secondary hover:text-secondary transition">İnsan Kaynakları <ChevronRight size={14} /></Link>
+            </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {achievements.map((item, i) => (

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, Pagination, EffectFade } from 'swiper/modules'
-import { MapPin, ArrowRight, GraduationCap, Calendar, Phone, Mail, Menu, X, ChevronDown, Facebook, Instagram, Youtube, Twitter } from 'lucide-react'
+import { MapPin, ArrowRight, GraduationCap, Calendar, Phone, Mail, Menu, X, ChevronDown, Facebook, Instagram, Youtube, Twitter, Play } from 'lucide-react'
 import api from '../lib/api'
 import { getBranchImageSrc, BRANCH_IMAGE_PLACEHOLDER } from '../lib/branchImage'
 import WhatsAppButton from '../components/WhatsAppButton'
@@ -148,7 +148,7 @@ const MainSite = () => {
               {slides.map((slide) => (
                 <SwiperSlide key={slide._id}>
                   <div className="relative h-full">
-                    <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
+                    <img src={slide.image} alt={slide.title} className="w-full h-full object-contain object-center" />
                     <div className="absolute inset-0 bg-gradient-to-r from-[#0f1b2d]/90 via-[#0f1b2d]/50 to-transparent" />
                     <div className="absolute inset-0 flex items-center">
                       <div className="container mx-auto px-4">
@@ -178,6 +178,33 @@ const MainSite = () => {
 
         <Stats />
         <Features />
+
+        {/* Tanıtım Videosu */}
+        <section className="py-20 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-10">
+                <p className="text-secondary font-semibold mb-2">Tanıtım</p>
+                <h2 className="text-3xl md:text-4xl font-bold text-primary">Kavram Koleji'ni Keşfedin</h2>
+                <p className="text-gray-500 mt-3">Yarım asrı aşan eğitim tecrübemizi videomuzda izleyin.</p>
+              </div>
+              <a href="https://www.youtube.com/@kavramkoleji" target="_blank" rel="noopener noreferrer" className="group relative block rounded-2xl overflow-hidden shadow-xl aspect-video bg-gray-900">
+                <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=450&fit=crop" alt="Kavram Koleji Tanıtım" className="w-full h-full object-contain object-center opacity-80 group-hover:opacity-90 transition" />
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition flex items-center justify-center">
+                  <div className="w-20 h-20 bg-secondary rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+                    <Play size={36} className="text-white ml-1" fill="white" />
+                  </div>
+                </div>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <span className="inline-flex items-center gap-2 bg-white/90 text-primary px-4 py-2 rounded-full font-semibold text-sm">
+                    <Play size={16} fill="currentColor" /> İzle
+                  </span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
         <CampusTour />
 
         {/* Haberler */}
@@ -196,7 +223,7 @@ const MainSite = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <Link to={`/haberler/${news[0].slug || news[0]._id}`} className="group">
                   <div className="relative rounded-2xl overflow-hidden shadow-xl h-full min-h-[420px] bg-gray-100">
-                    <img src={news[0].images?.[0] || 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=500&fit=crop'} alt={news[0].title} className="absolute inset-0 w-full h-full object-cover" />
+                    <img src={news[0].images?.[0] || 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=500&fit=crop'} alt={news[0].title} className="absolute inset-0 w-full h-full object-contain object-center" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     <div className="absolute bottom-0 left-0 right-0 p-8">
                       <div className="flex items-center gap-3 mb-3">
@@ -213,7 +240,7 @@ const MainSite = () => {
                     {news.slice(1, 4).map((item) => (
                       <Link key={item._id} to={`/haberler/${item.slug || item._id}`} className="group flex gap-4 bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
                         <div className="w-44 h-36 flex-shrink-0 bg-gray-100 flex items-center justify-center p-2 relative overflow-hidden">
-                          <img src={item.images?.[0] || 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=200&h=150&fit=crop'} alt={item.title} className="w-full h-full object-cover" />
+                          <img src={item.images?.[0] || 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=200&h=150&fit=crop'} alt={item.title} className="w-full h-full object-contain object-center" />
                           <div className="absolute top-2 left-2 bg-primary text-white px-2 py-1 rounded text-center">
                             <span className="text-sm font-bold block leading-none">{item.day}</span>
                             <span className="text-[10px] uppercase">{item.month}</span>
@@ -247,7 +274,7 @@ const MainSite = () => {
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {gallery.slice(0, 6).map((img) => (
                   <Link key={img._id} to="/galeri" className="group relative block rounded-xl overflow-hidden aspect-square shadow-md hover:shadow-xl transition">
-                    <img src={img.src} alt={img.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
+                    <img src={img.src} alt={img.title} className="w-full h-full object-contain object-center group-hover:scale-105 transition duration-300" />
                     {img.title && (
                       <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition">
                         <p className="text-white text-sm font-semibold truncate">{img.title}</p>
@@ -281,7 +308,7 @@ const MainSite = () => {
                           <img 
                             src={getBranchImageSrc(b)} 
                             alt={b.name} 
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                            className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300" 
                             onError={(e) => { (e.target as HTMLImageElement).src = BRANCH_IMAGE_PLACEHOLDER }} 
                           />
                           <div className="absolute bottom-0 left-0 right-0 h-1 bg-secondary" />
@@ -344,8 +371,14 @@ const MainSite = () => {
               <h4 className="font-bold text-lg mb-6">Hızlı Bağlantılar</h4>
               <ul className="space-y-3">
                 {navLinks.map(link => (<li key={link.to}><Link to={link.to} className="text-gray-400 hover:text-secondary transition text-sm">{link.label}</Link></li>))}
+                <li><Link to="/tarihcemiz" className="text-gray-400 hover:text-secondary transition text-sm">Tarihçemiz</Link></li>
+                <li><Link to="/yonetim-kadrosu" className="text-gray-400 hover:text-secondary transition text-sm">Yönetim Kadrosu</Link></li>
+                <li><Link to="/kurumsal-kimlik" className="text-gray-400 hover:text-secondary transition text-sm">Kurumsal Kimlik</Link></li>
                 <li><Link to="/franchise" className="text-gray-400 hover:text-secondary transition text-sm">Franchise</Link></li>
                 <li><Link to="/insan-kaynaklari" className="text-gray-400 hover:text-secondary transition text-sm">İnsan Kaynakları</Link></li>
+                <li><a href="https://kavramkurs.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-secondary transition text-sm">Kavram Kurs</a></li>
+                <li><a href="https://dijital.kavram.k12.tr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-secondary transition text-sm">Kavram Dijital Okul</a></li>
+                <li><a href="https://store.kavram.k12.tr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-secondary transition text-sm">Kavram Store</a></li>
               </ul>
             </div>
             <div>
@@ -356,10 +389,11 @@ const MainSite = () => {
                 <li className="flex items-center gap-3"><Mail size={18} className="text-secondary flex-shrink-0" /><a href="mailto:info@kavram.com.tr" className="text-gray-400 hover:text-secondary transition text-sm">info@kavram.com.tr</a></li>
               </ul>
               <div className="flex gap-3 mt-6">
-                <a href="https://facebook.com/kavramkoleji" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-secondary transition"><Facebook size={18} /></a>
-                <a href="https://instagram.com/kavramkoleji" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-secondary transition"><Instagram size={18} /></a>
-                <a href="https://youtube.com/kavramkoleji" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-secondary transition"><Youtube size={18} /></a>
-                <a href="https://twitter.com/kavramkoleji" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-secondary transition"><Twitter size={18} /></a>
+                <a href="https://facebook.com/kavramkoleji" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-secondary transition" aria-label="Facebook"><Facebook size={18} /></a>
+                <a href="https://instagram.com/kavramkoleji" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-secondary transition" aria-label="Instagram"><Instagram size={18} /></a>
+                <a href="https://youtube.com/@kavramkoleji" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-secondary transition" aria-label="YouTube"><Youtube size={18} /></a>
+                <a href="https://twitter.com/kavramkoleji" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-secondary transition" aria-label="Twitter"><Twitter size={18} /></a>
+                <a href="https://linkedin.com/company/kavramkoleji" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-secondary transition" aria-label="LinkedIn"><svg className="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
               </div>
             </div>
           </div>

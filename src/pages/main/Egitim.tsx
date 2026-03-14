@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ChevronRight, Star, BookOpen, Users, Target, Monitor, Award, Clock, FileText, Video, CheckCircle, GraduationCap, BarChart3, ClipboardCheck, Layers, UserCheck, Calendar } from 'lucide-react'
+import { ChevronRight, Star, BookOpen, Users, Target, Monitor, Award, Clock, FileText, Video, CheckCircle, GraduationCap, BarChart3, ClipboardCheck, Layers, UserCheck, Calendar, Baby, School } from 'lucide-react'
 import MainWrapper from '../../components/MainWrapper'
 import PageBanner from '../../components/PageBanner'
 
@@ -27,6 +27,29 @@ const Egitim = () => {
 
       <section className="py-12">
         <div className="container mx-auto px-4">
+          {/* Eğitim Kademeleri - Kavram Koleji */}
+          <div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-2xl p-8 mb-12 border border-gray-100">
+            <h3 className="text-xl font-bold text-primary mb-4">Kavram Koleji Eğitim Kademeleri</h3>
+            <p className="text-gray-600 text-sm mb-6">Anaokulundan liseye kadar her kademede kaliteli eğitim sunuyoruz.</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <Link to="/egitim/anaokulu" className="flex items-center gap-3 bg-white rounded-xl p-4 shadow-sm hover:shadow-md hover:border-secondary/30 border border-transparent transition group">
+                <Baby size={28} className="text-secondary" />
+                <div><span className="font-semibold text-primary group-hover:text-secondary transition">Anaokulu</span><p className="text-xs text-gray-500">3-6 yaş</p></div>
+              </Link>
+              <Link to="/egitim/ilkokul" className="flex items-center gap-3 bg-white rounded-xl p-4 shadow-sm hover:shadow-md hover:border-secondary/30 border border-transparent transition group">
+                <BookOpen size={28} className="text-secondary" />
+                <div><span className="font-semibold text-primary group-hover:text-secondary transition">İlkokul</span><p className="text-xs text-gray-500">1-4. sınıf</p></div>
+              </Link>
+              <Link to="/egitim/ortaokul" className="flex items-center gap-3 bg-white rounded-xl p-4 shadow-sm hover:shadow-md hover:border-secondary/30 border border-transparent transition group">
+                <School size={28} className="text-secondary" />
+                <div><span className="font-semibold text-primary group-hover:text-secondary transition">Ortaokul</span><p className="text-xs text-gray-500">5-8. sınıf</p></div>
+              </Link>
+              <Link to="/egitim/lise" className="flex items-center gap-3 bg-white rounded-xl p-4 shadow-sm hover:shadow-md hover:border-secondary/30 border border-transparent transition group">
+                <GraduationCap size={28} className="text-secondary" />
+                <div><span className="font-semibold text-primary group-hover:text-secondary transition">Lise</span><p className="text-xs text-gray-500">9-12. sınıf</p></div>
+              </Link>
+            </div>
+          </div>
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Main Content */}
             <div className="flex-1">

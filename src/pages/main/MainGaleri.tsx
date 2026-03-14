@@ -43,7 +43,7 @@ const MainGaleri = () => {
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {filtered.map(img => (
                   <div key={img._id} onClick={() => setSelected(img)} className="cursor-pointer group relative rounded-xl overflow-hidden aspect-square shadow-md hover:shadow-xl transition">
-                    <img src={img.src} alt={img.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
+                    <img src={img.src} alt={img.title} className="w-full h-full object-contain object-center group-hover:scale-105 transition duration-300" />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition flex items-end">
                       <div className="p-3 opacity-0 group-hover:opacity-100 transition"><p className="text-white text-sm font-semibold">{img.title}</p></div>
                     </div>
