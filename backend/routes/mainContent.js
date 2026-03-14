@@ -16,6 +16,8 @@ router.post('/contact', async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }) }
 })
 
+const DEFAULT_SLIDER_IMAGE = 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1600&h=900&fit=crop'
+
 // Ana site slider
 router.get('/slider', (req, res) => {
   const timeout = 2000
@@ -23,7 +25,13 @@ router.get('/slider', (req, res) => {
     MainSlider.find({ active: true }).sort({ order: 1, createdAt: -1 }),
     new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), timeout))
   ])
-    .then(slides => res.json(slides))
+    .then(slides => {
+      const validSlides = slides.map(s => {
+        const obj = s.toObject ? s.toObject() : { ...s }
+        return { ...obj, image: (obj.image && String(obj.image).trim()) ? obj.image : DEFAULT_SLIDER_IMAGE }
+      })
+      res.json(validSlides)
+    })
     .catch(err => { console.error('Slider:', err.message, '- fallback'); res.json(fallbackSlides) })
 })
 

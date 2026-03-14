@@ -32,6 +32,11 @@ body {
   background: #c8a45c !important;
 }
 
+/* Slider: Her slide kendi içinde izole, geçişte yazı üst üste gelmesin */
+.swiper-slide {
+  isolation: isolate;
+}
+
 .gradient-overlay {
   background: linear-gradient(to right, rgba(30, 58, 95, 0.9), rgba(30, 58, 95, 0.3));
 }
@@ -43,6 +48,12 @@ body {
 .card-hover:hover {
   transform: translateY(-10px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Fotoğraflar tam görünsün - kesilmesin (object-contain) */
+.img-full {
+  object-fit: contain !important;
+  object-position: center;
 }
 
 .nav-link {

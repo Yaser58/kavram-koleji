@@ -13,6 +13,8 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/effect-fade'
 
+const FALLBACK_SLIDER_IMAGE = 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1600&h=900&fit=crop'
+
 interface BranchInfo { _id: string; name: string; slug: string; city: string; logo?: string }
 interface MainSlide { _id: string; title: string; subtitle: string; image: string; link: string }
 interface MainNewsItem { _id: string; title: string; excerpt: string; images: string[]; category: string; day: string; month: string; year: string; slug?: string }
@@ -142,19 +144,28 @@ const MainSite = () => {
       {/* Main Content */}
       <main className="flex-grow">
         {/* Hero Slider */}
-        <section>
-          {slides.length > 0 ? (
-            <Swiper modules={[Autoplay, Pagination, EffectFade]} effect="fade" pagination={{ clickable: true }} autoplay={{ delay: 5000, disableOnInteraction: false }} loop className="h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px]">
-              {slides.map((slide) => (
-                <SwiperSlide key={slide._id}>
-                  <div className="relative h-full">
-                    <img src={slide.image} alt={slide.title} className="w-full h-full object-contain object-center" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#0f1b2d]/90 via-[#0f1b2d]/50 to-transparent" />
-                    <div className="absolute inset-0 flex items-center">
+        <section className="overflow-hidden">
+          {slides.filter(s => s.image?.trim()).length > 0 ? (
+            <Swiper
+              modules={[Autoplay, Pagination, EffectFade]}
+              effect="fade"
+              fadeEffect={{ crossFade: false }}
+              speed={400}
+              pagination={{ clickable: true }}
+              autoplay={{ delay: 5000, disableOnInteraction: false }}
+              loop
+              className="h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px]"
+            >
+              {slides.filter(s => s.image?.trim()).map((slide) => (
+                <SwiperSlide key={slide._id} className="overflow-hidden">
+                  <div className="relative h-full w-full overflow-hidden">
+                    <img src={slide.image || FALLBACK_SLIDER_IMAGE} alt={slide.title} className="absolute inset-0 w-full h-full object-cover object-center" onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_SLIDER_IMAGE }} />
+                    <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(15,27,45,0.92)_0%,rgba(15,27,45,0.6)_35%,transparent_65%)]" />
+                    <div className="absolute inset-0 flex items-center z-10">
                       <div className="container mx-auto px-4">
                         <div className="max-w-2xl">
                           {slide.subtitle && <p className="text-secondary font-semibold mb-3 text-lg">{slide.subtitle}</p>}
-                          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white">{slide.title}</h2>
+                          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white drop-shadow-sm">{slide.title}</h2>
                           <Link to={slide.link || '/kampusler'} className="inline-flex items-center gap-2 bg-secondary text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-primary transition group">
                             Keşfet <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                           </Link>

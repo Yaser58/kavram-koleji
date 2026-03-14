@@ -2,17 +2,18 @@ import { Users, Mail, Phone } from 'lucide-react'
 import MainWrapper from '../../components/MainWrapper'
 import PageBanner from '../../components/PageBanner'
 
-const PLACEHOLDER_IMG = 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=500&fit=crop'
+const PLACEHOLDER_IMG = '/yonetim-kadrosu/master-1_gmvr.jpg'
+const FALLBACK_EXTERNAL = 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=500&fit=crop'
 
 const management = [
-  { name: 'Bahattin DURMUŞ', title: 'Kurucu', image: PLACEHOLDER_IMG, email: '', phone: '' },
-  { name: 'Genel Müdür', title: 'Genel Müdür', image: PLACEHOLDER_IMG, email: 'info@kavram.com.tr', phone: '0216 210 19 74' },
-  { name: 'Eğitim Koordinatörü', title: 'Eğitim Koordinatörü', image: PLACEHOLDER_IMG, email: '', phone: '' },
-  { name: 'İdari İşler Müdürü', title: 'İdari İşler Müdürü', image: PLACEHOLDER_IMG, email: '', phone: '' },
-  { name: 'Mali İşler Müdürü', title: 'Mali İşler Müdürü', image: PLACEHOLDER_IMG, email: '', phone: '' },
-  { name: 'İnsan Kaynakları Müdürü', title: 'İnsan Kaynakları Müdürü', image: PLACEHOLDER_IMG, email: '', phone: '' },
-  { name: 'Pazarlama Müdürü', title: 'Pazarlama Müdürü', image: PLACEHOLDER_IMG, email: '', phone: '' },
-  { name: 'IT Müdürü', title: 'Bilgi Teknolojileri Müdürü', image: PLACEHOLDER_IMG, email: '', phone: '' },
+  { name: 'Bahattin DURMUŞ', title: 'Onursal Başkan', image: PLACEHOLDER_IMG, email: '', phone: '' },
+  { name: 'Nureddin DURMUŞ', title: 'Yönetim Kurulu Başkanı', image: PLACEHOLDER_IMG, email: '', phone: '' },
+  { name: 'Ümit KALKO', title: 'Yönetim Kurulu Üyesi', image: PLACEHOLDER_IMG, email: '', phone: '' },
+  { name: 'Selçuk IŞIK', title: 'Genel Müdür', image: '/yonetim-kadrosu/selcuk-isik_hxya.jpg', email: 'info@kavram.com.tr', phone: '0216 210 19 74' },
+  { name: 'Fatih HAKTÜRK', title: 'Eğitim Koordinatörü', image: '/yonetim-kadrosu/fatih-hakturk-v2_8nzw.jpg', email: '', phone: '' },
+  { name: 'Ercan KARA', title: 'Ölçme Değerlendirme ve Kurslar Koordinatörü', image: '/yonetim-kadrosu/ercan-kara_jha8.jpg', email: '', phone: '' },
+  { name: 'Nihal ÇIRPICI', title: 'Kurumsal İletişim Koordinatörü', image: '/yonetim-kadrosu/nihal-cirpici_kx6g.jpg', email: '', phone: '' },
+  { name: 'Mehmet ZEREN', title: 'Muhasebe Müdürü', image: '/yonetim-kadrosu/mehmet_bey_hegk.jpg', email: '', phone: '' },
 ]
 
 const YonetimKadrosu = () => {
@@ -37,7 +38,7 @@ const YonetimKadrosu = () => {
                     src={person.image} 
                     alt={person.name} 
                     className="w-full h-full object-contain object-center group-hover:scale-105 transition duration-300"
-                    onError={(e) => { (e.target as HTMLImageElement).src = PLACEHOLDER_IMG }}
+                    onError={(e) => { const el = e.target as HTMLImageElement; if (!el.dataset.fallback) { el.dataset.fallback = '1'; el.src = FALLBACK_EXTERNAL } }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition" />
                 </div>
