@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Phone, MapPin, Navigation, Home, Search } from 'lucide-react'
 import MainWrapper from '../../components/MainWrapper'
 import PageBanner from '../../components/PageBanner'
@@ -88,6 +89,7 @@ const kursMerkezleri: KursMerkezi[] = [
 const cities = ['Tümü', 'Adana', 'Ankara', 'Aydın', 'Balıkesir', 'Bursa', 'İstanbul', 'İzmir', 'Kocaeli', 'Manisa', 'Mardin', 'Mersin', 'Muğla', 'Niğde']
 
 const KursMerkezleri = () => {
+  const { t } = useTranslation()
   const [selectedCity, setSelectedCity] = useState('Tümü')
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -99,15 +101,14 @@ const KursMerkezleri = () => {
 
   return (
     <MainWrapper>
-      <PageBanner title="Kurs Merkezlerimiz" breadcrumbs={[{ label: 'Ana Sayfa', to: '/' }, { label: `Kurs Merkezlerimiz (${kursMerkezleri.length} merkez)` }]} />
+      <PageBanner title={t('pages.kursMerkezleri.titleWithCount', { count: kursMerkezleri.length })} breadcrumbs={[{ label: t('nav.home'), to: '/' }, { label: t('pages.kursMerkezleri.titleWithCount', { count: kursMerkezleri.length }) }]} />
       
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          {/* Filters */}
           <div className="bg-white rounded-2xl shadow-md p-6 mb-8">
             <div className="flex flex-col lg:flex-row gap-4">
               <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Şehir Seçin</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('pages.kursMerkezleri.citySelect')}</label>
                 <div className="flex flex-wrap gap-2">
                   {cities.map(city => (
                     <button
@@ -121,12 +122,12 @@ const KursMerkezleri = () => {
                 </div>
               </div>
               <div className="lg:w-80">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Ara</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('common.search')}</label>
                 <div className="relative">
                   <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="Merkez adı veya adres ara..."
+                    placeholder={t('pages.kursMerkezleri.searchPlaceholder')}
                     value={searchTerm}
                     onChange={e => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
@@ -136,18 +137,15 @@ const KursMerkezleri = () => {
             </div>
           </div>
 
-          <p className="text-gray-500 mb-6">{filtered.length} kurs merkezi bulundu</p>
+          <p className="text-gray-500 mb-6">{t('pages.kursMerkezleri.centersFound', { count: filtered.length })}</p>
 
-          {/* Cards */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {filtered.map((merkez, idx) => (
               <div key={idx} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition border border-gray-100 group">
                 <div className="flex">
-                  {/* Logo */}
                   <div className="w-32 md:w-40 flex-shrink-0 bg-gradient-to-br from-purple-100 via-pink-50 to-blue-100 flex items-center justify-center p-4">
                     <img src="/kavram-kurs-logo.jpg" alt="Kavram Kurs" className="w-20 h-20 object-contain rounded-full" />
                   </div>
-                  {/* Content */}
                   <div className="flex-1 p-5">
                     <h3 className="text-lg font-bold text-purple-700 mb-2 group-hover:text-purple-900 transition">{merkez.name}</h3>
                     {merkez.phone && (
@@ -172,11 +170,11 @@ const KursMerkezleri = () => {
                     )}
                     <div className="flex gap-3">
                       <a href="https://kavramkurs.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 bg-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-purple-700 transition">
-                        <Home size={14} /> Kurs Merkezini İncele
+                        <Home size={14} /> {t('pages.kursMerkezleri.inspectCenter')}
                       </a>
                       {merkez.mapUrl && (
                         <a href={merkez.mapUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-purple-600 hover:text-purple-800 text-sm font-medium">
-                          <Navigation size={14} /> Yol Tarifi
+                          <Navigation size={14} /> {t('pages.kursMerkezleri.directions')}
                         </a>
                       )}
                     </div>

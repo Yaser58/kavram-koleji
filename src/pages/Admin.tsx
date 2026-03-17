@@ -199,7 +199,7 @@ const Admin = () => {
                   <div className="space-y-3">{news.map(item => (
                     <div key={item._id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
                       <div className="bg-primary text-white px-3 py-2 rounded-lg text-center min-w-[50px]"><span className="text-lg font-bold block">{item.day || '01'}</span><span className="text-xs">{item.month || 'OCA'}</span></div>
-                      <img src={item.images?.[0] || 'https://via.placeholder.com/100'} alt={item.title} className="w-16 h-16 object-cover rounded-lg" />
+                      <img src={item.images?.[0] || 'https://via.placeholder.com/100'} alt={item.title} className="w-16 h-16 object-contain object-center rounded-lg" />
                       <div className="flex-grow min-w-0"><span className="text-xs bg-secondary/20 text-secondary px-2 py-1 rounded">{item.category}</span><h4 className="font-semibold text-primary mt-1 truncate">{item.title}</h4></div>
                       <div className="flex gap-2"><button onClick={() => editNews(item)} className="p-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200"><Edit size={18} /></button><button onClick={() => deleteNews(item._id)} className="p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200"><Trash2 size={18} /></button></div>
                     </div>
@@ -225,7 +225,7 @@ const Admin = () => {
                 )}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">{slides.map(item => (
                   <div key={item._id} className="relative group rounded-xl overflow-hidden">
-                    <img src={item.image} alt={item.title} className="w-full h-48 object-cover" />
+                    <img src={item.image} alt={item.title} className="w-full h-48 object-contain object-center" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-4"><p className="text-secondary text-sm">{item.subtitle}</p><h4 className="text-white font-bold">{item.title}</h4></div>
                     <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition"><button onClick={() => editSlide(item)} className="p-2 bg-white text-blue-600 rounded-lg"><Edit size={16} /></button><button onClick={() => deleteSlide(item._id)} className="p-2 bg-white text-red-600 rounded-lg"><Trash2 size={16} /></button></div>
                   </div>
@@ -249,7 +249,7 @@ const Admin = () => {
                 {images.length === 0 ? <p className="text-gray-500 text-center py-10">Henüz fotoğraf yok.</p> : (
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">{images.map(item => (
                     <div key={item._id} className="relative group rounded-xl overflow-hidden">
-                      <img src={item.src} alt={item.title} className="w-full h-40 object-cover" />
+                      <img src={item.src} alt={item.title} className="w-full h-40 object-contain object-center" />
                       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center gap-2">
                         <span className="text-white text-sm font-medium text-center px-2">{item.title}</span>
                         <div className="flex gap-2"><button onClick={() => editImage(item)} className="p-2 bg-white text-blue-600 rounded-lg"><Edit size={14} /></button><button onClick={() => deleteImage(item._id)} className="p-2 bg-white text-red-600 rounded-lg"><Trash2 size={14} /></button></div>
@@ -277,7 +277,7 @@ const Admin = () => {
                 {videos.length === 0 ? <p className="text-gray-500 text-center py-10">Henüz video yok.</p> : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">{videos.map(item => (
                     <div key={item._id} className="relative group rounded-xl overflow-hidden">
-                      <img src={item.thumbnail} alt={item.title} className="w-full h-48 object-cover" />
+                      <img src={item.thumbnail} alt={item.title} className="w-full h-48 object-contain object-center" />
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center"><Video size={40} className="text-white" /></div>
                       <div className="absolute bottom-0 left-0 right-0 bg-black/70 p-3"><h4 className="text-white font-semibold text-sm">{item.title}</h4></div>
                       <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition"><button onClick={() => editVideo(item)} className="p-2 bg-white text-blue-600 rounded-lg"><Edit size={16} /></button><button onClick={() => deleteVideo(item._id)} className="p-2 bg-white text-red-600 rounded-lg"><Trash2 size={16} /></button></div>

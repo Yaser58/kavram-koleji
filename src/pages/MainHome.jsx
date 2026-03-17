@@ -79,7 +79,7 @@ const MainHome = () => {
             {slides.map((slide) => (
               <SwiperSlide key={slide._id}>
                 <div className="relative h-full">
-                  <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
+                  <img src={slide.image} alt={slide.title} className="w-full h-full object-contain object-center" />
                   <div className="absolute inset-0 bg-gradient-to-r from-[#0f1b2d]/90 via-[#0f1b2d]/50 to-transparent" />
                   <div className="absolute inset-0 flex items-center">
                     <div className="container mx-auto px-4">
@@ -113,7 +113,7 @@ const MainHome = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div onClick={() => openNewsDetail(news[0])} className="cursor-pointer group">
                 <div className="relative rounded-2xl overflow-hidden shadow-xl h-full min-h-[420px]">
-                  <img src={news[0].images?.[0] || ''} alt={news[0].title} className="w-full h-full object-cover absolute inset-0" />
+                  <img src={news[0].images?.[0] || ''} alt={news[0].title} className="w-full h-full object-contain object-center absolute inset-0" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-8">
                     <div className="flex items-center gap-3 mb-3">
@@ -130,7 +130,7 @@ const MainHome = () => {
                   {news.slice(1, 4).map((item) => (
                     <div key={item._id} onClick={() => openNewsDetail(item)} className="cursor-pointer group flex gap-4 bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
                       <div className="w-44 h-36 flex-shrink-0 relative">
-                        <img src={item.images?.[0] || 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=200&h=150&fit=crop'} alt={item.title} className="w-full h-full object-cover" />
+                        <img src={item.images?.[0] || 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=200&h=150&fit=crop'} alt={item.title} className="w-full h-full object-contain object-center" />
                         <div className="absolute top-2 left-2 bg-primary text-white px-2 py-1 rounded text-center">
                           <span className="text-sm font-bold block leading-none">{item.day}</span>
                           <span className="text-[10px] uppercase">{item.month}</span>
@@ -240,7 +240,7 @@ const MainHome = () => {
           <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
             {selectedNews.images?.[0] && (
               <div className="relative">
-                <img src={selectedNews.images[0]} alt={selectedNews.title} className="w-full h-64 md:h-80 object-cover rounded-t-2xl" />
+                <img src={selectedNews.images[0]} alt={selectedNews.title} className="w-full h-64 md:h-80 object-contain object-center rounded-t-2xl" />
                 <button onClick={() => setSelectedNews(null)} className="absolute top-4 right-4 bg-white/90 p-2 rounded-full hover:bg-white transition"><X size={20} /></button>
                 <div className="absolute bottom-4 left-4 flex items-center gap-2">
                   <span className="bg-secondary text-white px-3 py-1 rounded-full text-xs font-semibold">{selectedNews.category}</span>

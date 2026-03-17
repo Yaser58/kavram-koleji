@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import api from '../lib/api'
-import { Plus, Trash2, Edit, LogOut, Save, X, Building2, Users, Shield, Eye, EyeOff, Newspaper, Image, Images } from 'lucide-react'
+import { Plus, Trash2, Edit, LogOut, Save, X, Building2, Users, Shield, Eye, EyeOff, Newspaper, Image, Images, Calendar, CalendarDays, Megaphone } from 'lucide-react'
 
 interface BranchStat {
   _id: string; name: string; slug: string; city: string; address: string; phone: string; email: string; active: boolean
@@ -15,8 +15,10 @@ interface UserItem {
 interface MainSlide { _id: string; title: string; subtitle: string; image: string; link: string; order: number; active: boolean }
 interface MainNewsItem { _id: string; title: string; excerpt: string; content: string; images: string[]; category: string; day: string; month: string; year: string; featured: boolean; active: boolean }
 interface MainGalleryItem { _id: string; src: string; title: string; category: string; active: boolean }
+interface MainAcademicCalendarItem { _id: string; title: string; startDate: string; endDate?: string; type: string; active: boolean }
+interface MainEventItem { _id: string; title: string; startDate: string; endDate?: string; location?: string; description?: string; imageUrl?: string; active: boolean }
 
-type Tab = 'branches' | 'users' | 'content' | 'main-slider' | 'main-news' | 'main-gallery'
+type Tab = 'branches' | 'users' | 'content' | 'main-slider' | 'main-news' | 'main-gallery' | 'main-duyurular' | 'main-academic-calendar' | 'main-events'
 
 const months = ['OCA', 'ŞUB', 'MAR', 'NİS', 'MAY', 'HAZ', 'TEM', 'AĞU', 'EYL', 'EKİ', 'KAS', 'ARA']
 
@@ -47,6 +49,14 @@ const SuperAdmin = () => {
   const [mainSliderForm, setMainSliderForm] = useState({ title: '', subtitle: '', image: '', link: '/', order: 0, active: true })
   const [mainNewsForm, setMainNewsForm] = useState({ title: '', excerpt: '', content: '', images: [''] as string[], category: 'Genel', day: '', month: 'MAR', year: '2026', featured: false, active: true })
   const [mainGalleryForm, setMainGalleryForm] = useState({ src: '', title: '', category: 'Genel', active: true })
+  const [mainAcademicCalendar, setMainAcademicCalendar] = useState<MainAcademicCalendarItem[]>([])
+  const [mainEvents, setMainEvents] = useState<MainEventItem[]>([])
+  const [showMainAcademicCalendarForm, setShowMainAcademicCalendarForm] = useState(false)
+  const [showMainEventForm, setShowMainEventForm] = useState(false)
+  const [editingAcademicCalendarId, setEditingAcademicCalendarId] = useState<string | null>(null)
+  const [editingEventId, setEditingEventId] = useState<string | null>(null)
+  const [academicCalendarForm, setAcademicCalendarForm] = useState({ title: '', startDate: '', endDate: '', type: 'diger', active: true })
+  const [eventForm, setEventForm] = useState({ title: '', startDate: '', endDate: '', location: '', description: '', imageUrl: '', active: true })
 
   const [branchForm, setBranchForm] = useState({ name: '', slug: '', city: '', address: '', phone: '', email: '', logo: '', primaryColor: '#1e3a5f', secondaryColor: '#c8a45c' })
   const [userForm, setUserForm] = useState({ username: '', password: '', name: '', role: 'branch_admin', branch: '', active: true })
@@ -56,12 +66,14 @@ const SuperAdmin = () => {
   const loadMainSlides = useCallback(() => api.get('/main/admin/slider').then(setMainSlides).catch(() => {}), [])
   const loadMainNews = useCallback(() => api.get('/main/admin/news').then(setMainNews).catch(() => {}), [])
   const loadMainGallery = useCallback(() => api.get('/main/admin/gallery').then(setMainGallery).catch(() => {}), [])
+  const loadMainAcademicCalendar = useCallback(() => api.get('/main/admin/academic-calendar').then(setMainAcademicCalendar).catch(() => {}), [])
+  const loadMainEvents = useCallback(() => api.get('/main/admin/events').then(setMainEvents).catch(() => {}), [])
 
   useEffect(() => {
     if (isSuperAdmin) {
-      loadBranches(); loadUsers(); loadMainSlides(); loadMainNews(); loadMainGallery()
+      loadBranches(); loadUsers(); loadMainSlides(); loadMainNews(); loadMainGallery(); loadMainAcademicCalendar(); loadMainEvents()
     }
-  }, [isSuperAdmin, loadBranches, loadUsers, loadMainSlides, loadMainNews, loadMainGallery])
+  }, [isSuperAdmin, loadBranches, loadUsers, loadMainSlides, loadMainNews, loadMainGallery, loadMainAcademicCalendar, loadMainEvents])
 
   if (!isSuperAdmin) return <Navigate to="/giris" replace />
 
@@ -149,6 +161,34 @@ const SuperAdmin = () => {
     setEditingMainGalleryId(g._id); setShowMainGalleryForm(true)
   }
 
+  // Academic Calendar handlers
+  const handleAcademicCalendarSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      editingAcademicCalendarId ? await api.put(`/main/admin/academic-calendar/${editingAcademicCalendarId}`, academicCalendarForm) : await api.post('/main/admin/academic-calendar', academicCalendarForm)
+      setAcademicCalendarForm({ title: '', startDate: '', endDate: '', type: 'diger', active: true })
+      setEditingAcademicCalendarId(null); setShowMainAcademicCalendarForm(false); loadMainAcademicCalendar()
+    } catch (err: any) { alert(err.message || 'Hata oluştu') }
+  }
+  const editAcademicCalendar = (item: MainAcademicCalendarItem) => {
+    setAcademicCalendarForm({ title: item.title, startDate: item.startDate ? item.startDate.slice(0, 10) : '', endDate: item.endDate ? item.endDate.slice(0, 10) : '', type: item.type || 'diger', active: item.active })
+    setEditingAcademicCalendarId(item._id); setShowMainAcademicCalendarForm(true)
+  }
+
+  // Events handlers
+  const handleEventSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      editingEventId ? await api.put(`/main/admin/events/${editingEventId}`, eventForm) : await api.post('/main/admin/events', eventForm)
+      setEventForm({ title: '', startDate: '', endDate: '', location: '', description: '', imageUrl: '', active: true })
+      setEditingEventId(null); setShowMainEventForm(false); loadMainEvents()
+    } catch (err: any) { alert(err.message || 'Hata oluştu') }
+  }
+  const editEvent = (item: MainEventItem) => {
+    setEventForm({ title: item.title, startDate: item.startDate ? item.startDate.slice(0, 16) : '', endDate: item.endDate ? item.endDate.slice(0, 16) : '', location: item.location || '', description: item.description || '', imageUrl: item.imageUrl || '', active: item.active })
+    setEditingEventId(item._id); setShowMainEventForm(true)
+  }
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
@@ -171,7 +211,10 @@ const SuperAdmin = () => {
             { id: 'content' as Tab, label: 'Şube İçerikleri', icon: Building2 },
             { id: 'main-slider' as Tab, label: 'Ana Site Slider', icon: Image },
             { id: 'main-news' as Tab, label: 'Ana Site Haberler', icon: Newspaper },
+            { id: 'main-duyurular' as Tab, label: 'Ana Site Duyurular', icon: Megaphone },
             { id: 'main-gallery' as Tab, label: 'Ana Site Galeri', icon: Images },
+            { id: 'main-academic-calendar' as Tab, label: 'Akademik Takvim', icon: Calendar },
+            { id: 'main-events' as Tab, label: 'Etkinlikler', icon: CalendarDays },
           ].map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex items-center gap-2 px-5 py-3 rounded-xl font-semibold transition ${activeTab === tab.id ? 'bg-primary text-white shadow-lg' : 'bg-white text-gray-600 hover:bg-gray-50'}`}>
               <tab.icon size={18} /> {tab.label}
@@ -354,7 +397,7 @@ const SuperAdmin = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {mainSlides.map(s => (
                 <div key={s._id} className="relative group rounded-2xl overflow-hidden shadow-lg bg-white">
-                  <img src={s.image} alt={s.title} className="w-full h-48 object-cover" />
+                  <img src={s.image} alt={s.title} className="w-full h-48 object-contain object-center" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-4">
                     <p className="text-secondary text-sm">{s.subtitle}</p>
                     <h4 className="text-white font-bold">{s.title}</h4>
@@ -420,7 +463,7 @@ const SuperAdmin = () => {
                       <span className="text-lg font-bold block">{item.day}</span>
                       <span className="text-xs">{item.month}</span>
                     </div>
-                    {item.images?.[0] && <img src={item.images[0]} alt={item.title} className="w-16 h-16 object-cover rounded-lg" />}
+                    {item.images?.[0] && <img src={item.images[0]} alt={item.title} className="w-16 h-16 object-contain object-center rounded-lg" />}
                     <div className="flex-grow min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="text-xs bg-secondary/20 text-secondary px-2 py-1 rounded">{item.category}</span>
@@ -465,7 +508,7 @@ const SuperAdmin = () => {
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {mainGallery.map(item => (
                   <div key={item._id} className="relative group rounded-xl overflow-hidden shadow-lg">
-                    <img src={item.src} alt={item.title} className="w-full h-40 object-cover" />
+                    <img src={item.src} alt={item.title} className="w-full h-40 object-contain object-center" />
                     {!item.active && <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">Pasif</div>}
                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center gap-2">
                       <span className="text-white text-sm font-medium text-center px-2">{item.title}</span>
@@ -474,6 +517,112 @@ const SuperAdmin = () => {
                         <button onClick={() => editMainGallery(item)} className="p-2 bg-white text-blue-600 rounded-lg"><Edit size={14} /></button>
                         <button onClick={async () => { if(confirm('Silmek istediğinize emin misiniz?')) { await api.delete(`/main/admin/gallery/${item._id}`); loadMainGallery() }}} className="p-2 bg-white text-red-600 rounded-lg"><Trash2 size={14} /></button>
                       </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Ana Site Duyurular - Haberlerden Duyuru kategorisi */}
+        {activeTab === 'main-duyurular' && (
+          <div>
+            <div className="flex justify-between items-center mb-6">
+              <div><h2 className="text-2xl font-bold text-primary">Ana Site Duyurular</h2><p className="text-gray-500 text-sm">Resmi duyurular (Ana Site Haberlerden kategori: Duyuru)</p></div>
+              <button onClick={() => { setActiveTab('main-news'); setShowMainNewsForm(true); setEditingMainNewsId(null); setMainNewsForm({ title: '', excerpt: '', content: '', images: [''], category: 'Duyuru', day: '', month: 'MAR', year: '2026', featured: false, active: true }) }} className="flex items-center gap-2 bg-secondary text-white px-4 py-2 rounded-lg hover:bg-primary transition"><Plus size={18} /> Yeni Duyuru</button>
+            </div>
+            {mainNews.filter(n => n.category === 'Duyuru').length === 0 ? <p className="text-gray-500 text-center py-10">Henüz duyuru eklenmemiş. Yeni Duyuru ile ekleyebilirsiniz.</p> : (
+              <div className="space-y-3">
+                {mainNews.filter(n => n.category === 'Duyuru').map(item => (
+                  <div key={item._id} className="flex items-center gap-4 p-4 bg-white rounded-xl shadow hover:shadow-md transition">
+                    <div className="bg-secondary text-white px-3 py-2 rounded-lg text-center min-w-[50px]"><span className="text-lg font-bold block">{item.day}</span><span className="text-xs">{item.month}</span></div>
+                    {item.images?.[0] && <img src={item.images[0]} alt={item.title} className="w-16 h-16 object-contain rounded-lg" />}
+                    <div className="flex-grow min-w-0"><h4 className="font-semibold text-primary truncate">{item.title}</h4><span className="text-xs text-gray-400">Duyuru</span></div>
+                    <div className="flex gap-2">
+                      <button onClick={() => editMainNews(item)} className="p-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200"><Edit size={18} /></button>
+                      <button onClick={async () => { if(confirm('Silmek istediğinize emin misiniz?')) { await api.delete(`/main/admin/news/${item._id}`); loadMainNews() }}} className="p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200"><Trash2 size={18} /></button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Akademik Takvim */}
+        {activeTab === 'main-academic-calendar' && (
+          <div>
+            <div className="flex justify-between items-center mb-6">
+              <div><h2 className="text-2xl font-bold text-primary">Akademik Takvim</h2><p className="text-gray-500 text-sm">Kayıt, sınav, tatil ve dönem tarihleri</p></div>
+              <button onClick={() => { setShowMainAcademicCalendarForm(true); setEditingAcademicCalendarId(null); setAcademicCalendarForm({ title: '', startDate: '', endDate: '', type: 'diger', active: true }) }} className="flex items-center gap-2 bg-secondary text-white px-4 py-2 rounded-lg hover:bg-primary transition"><Plus size={18} /> Yeni Kayıt</button>
+            </div>
+            {showMainAcademicCalendarForm && (
+              <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+                <div className="flex justify-between items-center mb-4"><h3 className="font-bold text-primary">{editingAcademicCalendarId ? 'Düzenle' : 'Yeni Kayıt'}</h3><button onClick={() => setShowMainAcademicCalendarForm(false)} className="text-gray-400 hover:text-red-500"><X size={20} /></button></div>
+                <form onSubmit={handleAcademicCalendarSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <input placeholder="Başlık *" required value={academicCalendarForm.title} onChange={e => setAcademicCalendarForm({...academicCalendarForm, title: e.target.value})} className="px-4 py-3 border rounded-lg" />
+                  <select value={academicCalendarForm.type} onChange={e => setAcademicCalendarForm({...academicCalendarForm, type: e.target.value})} className="px-4 py-3 border rounded-lg">
+                    <option value="kayit">Kayıt</option><option value="sinav">Sınav</option><option value="tatil">Tatil</option><option value="donem">Dönem</option><option value="diger">Diğer</option>
+                  </select>
+                  <input type="date" placeholder="Başlangıç *" required value={academicCalendarForm.startDate} onChange={e => setAcademicCalendarForm({...academicCalendarForm, startDate: e.target.value})} className="px-4 py-3 border rounded-lg" />
+                  <input type="date" placeholder="Bitiş" value={academicCalendarForm.endDate} onChange={e => setAcademicCalendarForm({...academicCalendarForm, endDate: e.target.value})} className="px-4 py-3 border rounded-lg" />
+                  <label className="flex items-center gap-2"><input type="checkbox" checked={academicCalendarForm.active} onChange={e => setAcademicCalendarForm({...academicCalendarForm, active: e.target.checked})} className="w-5 h-5" /><span>Aktif</span></label>
+                  <button type="submit" className="md:col-span-2 flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-lg hover:bg-secondary transition"><Save size={18} /> Kaydet</button>
+                </form>
+              </div>
+            )}
+            {mainAcademicCalendar.length === 0 ? <p className="text-gray-500 text-center py-10">Henüz kayıt yok. Demo veriler seed ile eklenebilir.</p> : (
+              <div className="space-y-3">
+                {mainAcademicCalendar.map(item => (
+                  <div key={item._id} className="flex items-center gap-4 p-4 bg-white rounded-xl shadow">
+                    <div className="bg-primary text-white px-3 py-2 rounded-lg text-center min-w-[60px]"><span className="text-sm font-bold block">{new Date(item.startDate).getDate()}</span><span className="text-xs">{new Date(item.startDate).toLocaleDateString('tr-TR', { month: 'short' })}</span></div>
+                    <div className="flex-grow"><h4 className="font-semibold text-primary">{item.title}</h4><span className="text-xs text-gray-500">{new Date(item.startDate).toLocaleDateString('tr-TR')}{item.endDate ? ' - ' + new Date(item.endDate).toLocaleDateString('tr-TR') : ''}</span></div>
+                    <span className="text-xs px-2 py-1 rounded bg-secondary/20 text-secondary">{item.type}</span>
+                    <div className="flex gap-2">
+                      <button onClick={() => editAcademicCalendar(item)} className="p-2 bg-blue-100 text-blue-600 rounded-lg"><Edit size={18} /></button>
+                      <button onClick={async () => { if(confirm('Silmek istediğinize emin misiniz?')) { await api.delete(`/main/admin/academic-calendar/${item._id}`); loadMainAcademicCalendar() }}} className="p-2 bg-red-100 text-red-600 rounded-lg"><Trash2 size={18} /></button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Etkinlikler */}
+        {activeTab === 'main-events' && (
+          <div>
+            <div className="flex justify-between items-center mb-6">
+              <div><h2 className="text-2xl font-bold text-primary">Etkinlikler</h2><p className="text-gray-500 text-sm">Yaklaşan etkinlikleri yönetin</p></div>
+              <button onClick={() => { setShowMainEventForm(true); setEditingEventId(null); setEventForm({ title: '', startDate: '', endDate: '', location: '', description: '', imageUrl: '', active: true }) }} className="flex items-center gap-2 bg-secondary text-white px-4 py-2 rounded-lg hover:bg-primary transition"><Plus size={18} /> Yeni Etkinlik</button>
+            </div>
+            {showMainEventForm && (
+              <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+                <div className="flex justify-between items-center mb-4"><h3 className="font-bold text-primary">{editingEventId ? 'Düzenle' : 'Yeni Etkinlik'}</h3><button onClick={() => setShowMainEventForm(false)} className="text-gray-400 hover:text-red-500"><X size={20} /></button></div>
+                <form onSubmit={handleEventSubmit} className="space-y-4">
+                  <input placeholder="Başlık *" required value={eventForm.title} onChange={e => setEventForm({...eventForm, title: e.target.value})} className="w-full px-4 py-3 border rounded-lg" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="datetime-local" placeholder="Başlangıç *" required value={eventForm.startDate} onChange={e => setEventForm({...eventForm, startDate: e.target.value})} className="px-4 py-3 border rounded-lg" />
+                    <input type="datetime-local" placeholder="Bitiş" value={eventForm.endDate} onChange={e => setEventForm({...eventForm, endDate: e.target.value})} className="px-4 py-3 border rounded-lg" />
+                  </div>
+                  <input placeholder="Yer" value={eventForm.location} onChange={e => setEventForm({...eventForm, location: e.target.value})} className="w-full px-4 py-3 border rounded-lg" />
+                  <input type="url" placeholder="Görsel URL" value={eventForm.imageUrl} onChange={e => setEventForm({...eventForm, imageUrl: e.target.value})} className="w-full px-4 py-3 border rounded-lg" />
+                  <textarea placeholder="Açıklama" rows={4} value={eventForm.description} onChange={e => setEventForm({...eventForm, description: e.target.value})} className="w-full px-4 py-3 border rounded-lg" />
+                  <label className="flex items-center gap-2"><input type="checkbox" checked={eventForm.active} onChange={e => setEventForm({...eventForm, active: e.target.checked})} className="w-5 h-5" /><span>Aktif</span></label>
+                  <button type="submit" className="w-full flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-lg hover:bg-secondary transition"><Save size={18} /> Kaydet</button>
+                </form>
+              </div>
+            )}
+            {mainEvents.length === 0 ? <p className="text-gray-500 text-center py-10">Henüz etkinlik eklenmemiş.</p> : (
+              <div className="space-y-3">
+                {mainEvents.map(item => (
+                  <div key={item._id} className="flex items-center gap-4 p-4 bg-white rounded-xl shadow">
+                    {item.imageUrl ? <img src={item.imageUrl} alt={item.title} className="w-20 h-20 object-contain rounded-lg" /> : <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center"><Calendar size={24} className="text-gray-400" /></div>}
+                    <div className="flex-grow"><h4 className="font-semibold text-primary">{item.title}</h4><span className="text-xs text-gray-500">{new Date(item.startDate).toLocaleDateString('tr-TR')}{item.location ? ' • ' + item.location : ''}</span></div>
+                    <div className="flex gap-2">
+                      <button onClick={() => editEvent(item)} className="p-2 bg-blue-100 text-blue-600 rounded-lg"><Edit size={18} /></button>
+                      <button onClick={async () => { if(confirm('Silmek istediğinize emin misiniz?')) { await api.delete(`/main/admin/events/${item._id}`); loadMainEvents() }}} className="p-2 bg-red-100 text-red-600 rounded-lg"><Trash2 size={18} /></button>
                     </div>
                   </div>
                 ))}

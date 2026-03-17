@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { Calendar, Share2, ArrowLeft } from 'lucide-react'
 import MainWrapper from '../../components/MainWrapper'
 import PageBanner from '../../components/PageBanner'
 import api from '../../lib/api'
+import { getLocalizedNews } from '../../lib/newsLocalization'
 
 interface NewsItem {
   _id: string
@@ -16,20 +18,28 @@ interface NewsItem {
   month: string
   year: string
   slug?: string
+  titleEn?: string
+  excerptEn?: string
+  contentEn?: string
+  categoryEn?: string
+  monthEn?: string
+  startDate?: string
 }
 
 const HaberDetay = () => {
   const { slug } = useParams<{ slug: string }>()
+  const { t, i18n } = useTranslation()
   const [news, setNews] = useState<NewsItem | null>(null)
   const [otherNews, setOtherNews] = useState<NewsItem[]>([])
   const [loading, setLoading] = useState(true)
+  const lang = i18n.language || 'tr'
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [newsItem, allNews] = await Promise.all([
           api.get(`/main/news/slug/${slug}`),
-          api.get('/main/news')
+          api.get('/main/news', { lang })
         ])
         setNews(newsItem)
         const list = Array.isArray(allNews) ? allNews : []
@@ -41,16 +51,17 @@ const HaberDetay = () => {
       }
     }
     fetchData()
-  }, [slug])
+  }, [slug, lang])
 
+  const loc = news ? getLocalizedNews(news, lang) : null
   const shareOnTwitter = () => {
-    if (news) window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(news.title)}&url=${encodeURIComponent(window.location.href)}`, '_blank')
+    if (loc) window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(loc.title)}&url=${encodeURIComponent(window.location.href)}`, '_blank')
   }
   const shareOnFacebook = () => {
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank')
   }
   const shareOnWhatsApp = () => {
-    if (news) window.open(`https://wa.me/?text=${encodeURIComponent(news.title + ' ' + window.location.href)}`, '_blank')
+    if (loc) window.open(`https://wa.me/?text=${encodeURIComponent(loc.title + ' ' + window.location.href)}`, '_blank')
   }
 
   if (loading) {
@@ -66,11 +77,11 @@ const HaberDetay = () => {
   if (!news) {
     return (
       <MainWrapper>
-        <PageBanner title="Haber Bulunamadı" breadcrumbs={[{ label: 'Ana Sayfa', to: '/' }, { label: 'Haberler', to: '/haberler' }, { label: 'Bulunamadı' }]} />
+        <PageBanner title={t('news.notFound')} breadcrumbs={[{ label: t('nav.home'), to: '/' }, { label: t('news.title'), to: '/haberler' }, { label: t('news.notFound') }]} />
         <div className="container mx-auto px-4 py-16 text-center">
-          <p className="text-gray-500 mb-6">Aradığınız haber bulunamadı.</p>
+          <p className="text-gray-500 mb-6">{t('news.notFoundDesc')}</p>
           <Link to="/haberler" className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full font-semibold hover:bg-secondary transition">
-            <ArrowLeft size={18} /> Haberlere Dön
+            <ArrowLeft size={18} /> {t('news.backToNews')}
           </Link>
         </div>
       </MainWrapper>
@@ -80,10 +91,10 @@ const HaberDetay = () => {
   return (
     <MainWrapper>
       <PageBanner 
-        title={news.title} 
+        title={loc!.title} 
         breadcrumbs={[
-          { label: 'Ana Sayfa', to: '/' }, 
-          { label: news.title }
+          { label: t('nav.home'), to: '/' }, 
+          { label: loc!.title }
         ]} 
       />
 
@@ -96,7 +107,7 @@ const HaberDetay = () => {
               <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
                 <div className="flex items-center gap-2 text-gray-500">
                   <Calendar size={18} />
-                  <span>{news.day} {news.month} {news.year}</span>
+                  <span>{loc!.day} {loc!.month} {loc!.year}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <button onClick={shareOnTwitter} className="w-9 h-9 bg-gray-100 hover:bg-[#1DA1F2] hover:text-white rounded-full flex items-center justify-center transition" title="Twitter'da Paylaş">
@@ -114,16 +125,16 @@ const HaberDetay = () => {
               {/* Image */}
               {news.images?.[0] && (
                 <div className="mb-8 rounded-2xl overflow-hidden shadow-lg bg-gray-100 flex items-center justify-center">
-                  <img src={news.images[0]} alt={news.title} className="max-w-full max-h-[500px] object-contain" />
+                  <img src={news.images[0]} alt={loc!.title} className="max-w-full max-h-[500px] object-contain" />
                 </div>
               )}
 
               {/* Content */}
               <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-                {news.content ? (
-                  <div dangerouslySetInnerHTML={{ __html: news.content.replace(/\n/g, '<br/>') }} />
+                {loc!.content ? (
+                  <div dangerouslySetInnerHTML={{ __html: (loc!.content || '').replace(/\n/g, '<br/>') }} />
                 ) : (
-                  <p>{news.excerpt}</p>
+                  <p>{loc!.excerpt}</p>
                 )}
               </div>
             </div>
@@ -131,27 +142,29 @@ const HaberDetay = () => {
             {/* Sidebar */}
             <div className="lg:w-80 flex-shrink-0">
               <div className="bg-gradient-to-br from-purple-600 to-pink-500 rounded-2xl p-6 text-white sticky top-24">
-                <h3 className="text-lg font-bold mb-6">DİĞER HABERLERE GÖZ ATIN</h3>
+                <h3 className="text-lg font-bold mb-6">{t('common.viewAll').toUpperCase()} {t('news.title').toUpperCase()}</h3>
                 <div className="space-y-4">
-                  {otherNews.map(item => (
+                  {otherNews.map(item => {
+                    const otherLoc = getLocalizedNews(item, lang)
+                    return (
                     <Link 
                       key={item._id} 
                       to={`/haberler/${item.slug || item._id}`}
                       className="flex gap-3 group"
                     >
                       <div className="flex-1">
-                        <h4 className="text-sm font-medium group-hover:text-yellow-300 transition line-clamp-2">{item.title}</h4>
+                        <h4 className="text-sm font-medium group-hover:text-yellow-300 transition line-clamp-2">{otherLoc.title}</h4>
                       </div>
                       {item.images?.[0] && (
                         <div className="w-16 h-16 bg-white/20 rounded-lg flex-shrink-0 flex items-center justify-center p-1">
-                          <img src={item.images[0]} alt={item.title} className="max-w-full max-h-full object-contain rounded" />
+                          <img src={item.images[0]} alt={otherLoc.title} className="max-w-full max-h-full object-contain rounded" />
                         </div>
                       )}
                     </Link>
-                  ))}
+                  )})}
                 </div>
                 <Link to="/haberler" className="mt-6 block text-center bg-white/20 hover:bg-white/30 py-2.5 rounded-full text-sm font-semibold transition">
-                  Tüm Haberler
+                  {t('common.viewAll')} {t('news.title')}
                 </Link>
               </div>
             </div>

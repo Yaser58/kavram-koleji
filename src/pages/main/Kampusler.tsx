@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { Phone, MapPin, Navigation, Home, Search } from 'lucide-react'
 import MainWrapper from '../../components/MainWrapper'
@@ -20,27 +21,30 @@ interface Kampus {
   mapCoords?: { lat: number; lng: number }
 }
 
+const ALL_CITIES_KEY = '__all__'
+
 const Kampusler = () => {
+  const { t } = useTranslation()
   const [kampusler, setKampusler] = useState<Kampus[]>([])
   const [loading, setLoading] = useState(true)
-  const [selectedCity, setSelectedCity] = useState('Tümü')
+  const [selectedCity, setSelectedCity] = useState(ALL_CITIES_KEY)
   const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
     api.get('/branches').then(setKampusler).catch(() => []).finally(() => setLoading(false))
   }, [])
 
-  const cities = ['Tümü', ...Array.from(new Set(kampusler.map(k => k.city))).sort()]
+  const cityList = [ALL_CITIES_KEY, ...Array.from(new Set(kampusler.map(k => k.city))).sort()]
 
   const filtered = kampusler.filter(k => {
-    const matchCity = selectedCity === 'Tümü' || k.city === selectedCity
+    const matchCity = selectedCity === ALL_CITIES_KEY || k.city === selectedCity
     const matchSearch = k.name.toLowerCase().includes(searchTerm.toLowerCase()) || k.address.toLowerCase().includes(searchTerm.toLowerCase())
     return matchCity && matchSearch
   })
 
   return (
     <MainWrapper>
-      <PageBanner title="Kampüslerimiz" breadcrumbs={[{ label: 'Ana Sayfa', to: '/' }, { label: 'Kampüslerimiz' }]} />
+      <PageBanner title={t('pages.kampusler.title')} breadcrumbs={[{ label: t('nav.home'), to: '/' }, { label: t('pages.kampusler.title') }]} />
       
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
@@ -96,7 +100,7 @@ const Kampusler = () => {
                             to={`/${kampus.slug}`}
                             className="inline-flex items-center gap-2 bg-secondary text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-primary transition"
                           >
-                            <Home size={16} /> Kampüsü İncele
+                            <Home size={16} /> {t('pages.kampusler.inspectCampus')}
                           </Link>
                           {mapUrl && (
                             <a 
@@ -105,7 +109,7 @@ const Kampusler = () => {
                               rel="noopener noreferrer" 
                               className="inline-flex items-center gap-2 text-primary hover:text-secondary text-sm font-medium"
                             >
-                              <Navigation size={16} /> Yol Tarifi
+                              <Navigation size={16} /> {t('pages.kampusler.directions')}
                             </a>
                           )}
                         </div>
@@ -119,7 +123,7 @@ const Kampusler = () => {
             {/* Sidebar */}
             <div className="lg:w-80 flex-shrink-0">
               <div className="bg-white rounded-2xl shadow-md p-6 sticky top-24 border border-gray-100">
-                <h3 className="text-lg font-bold text-primary mb-4">Kampüs Arama</h3>
+                <h3 className="text-lg font-bold text-primary mb-4">{t('pages.kampusler.searchTitle')}</h3>
                 
                 {/* Search */}
                 <div className="mb-4">
@@ -127,7 +131,7 @@ const Kampusler = () => {
                     <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                     <input
                       type="text"
-                      placeholder="Kampüs Adı"
+                      placeholder={t('pages.kampusler.searchPlaceholder')}
                       value={searchTerm}
                       onChange={e => setSearchTerm(e.target.value)}
                       className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm"
@@ -142,8 +146,8 @@ const Kampusler = () => {
                     onChange={e => setSelectedCity(e.target.value)}
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm"
                   >
-                    {cities.map(city => (
-                      <option key={city} value={city}>{city}</option>
+                    {cityList.map(city => (
+                      <option key={city} value={city}>{city === ALL_CITIES_KEY ? t('common.all') : city}</option>
                     ))}
                   </select>
                 </div>
@@ -153,11 +157,11 @@ const Kampusler = () => {
                   onClick={() => {}}
                   className="w-full bg-secondary text-white py-3 rounded-xl font-semibold hover:bg-primary transition flex items-center justify-center gap-2"
                 >
-                  <Search size={18} /> Ara
+                  <Search size={18} /> {t('common.search')}
                 </button>
                 
                 {/* Results Count */}
-                <p className="text-center text-gray-500 text-sm mt-4">{filtered.length} kampüs bulundu</p>
+                <p className="text-center text-gray-500 text-sm mt-4">{t('pages.kampusler.campusesFound', { count: filtered.length })}</p>
               </div>
             </div>
           </div>

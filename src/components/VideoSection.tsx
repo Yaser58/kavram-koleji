@@ -40,7 +40,7 @@ const VideoSection = () => {
                   <img
                     src={video.thumbnail}
                     alt={video.title}
-                    className="w-full h-[250px] md:h-[300px] object-cover"
+                    className="w-full h-[250px] md:h-[300px] object-contain object-center"
                   />
                   <div className="absolute inset-0 bg-primary/40 flex flex-col items-center justify-center group-hover:bg-primary/50 transition">
                     <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform mb-3">

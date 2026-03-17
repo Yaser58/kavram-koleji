@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { Calendar, ArrowRight } from 'lucide-react'
 import MainWrapper from '../../components/MainWrapper'
 import PageBanner from '../../components/PageBanner'
 import api from '../../lib/api'
+import { getLocalizedNews } from '../../lib/newsLocalization'
 
 interface NewsItem {
   _id: string
@@ -15,17 +17,24 @@ interface NewsItem {
   month: string
   year: string
   slug?: string
+  titleEn?: string
+  excerptEn?: string
+  categoryEn?: string
+  monthEn?: string
+  startDate?: string
 }
 
 const Haberler = () => {
+  const { t, i18n } = useTranslation()
   const [news, setNews] = useState<NewsItem[]>([])
   const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
+  const lang = i18n.language || 'tr'
 
   useEffect(() => {
-    api.get('/main/news').then(setNews).catch(() => {}).finally(() => setLoading(false))
-  }, [])
+    api.get('/main/news', { lang }).then(setNews).catch(() => {}).finally(() => setLoading(false))
+  }, [lang])
 
   const totalPages = Math.ceil(news.length / itemsPerPage)
   const paginatedNews = news.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
@@ -33,10 +42,10 @@ const Haberler = () => {
   return (
     <MainWrapper>
       <PageBanner 
-        title="Haberler" 
+        title={t('news.title')} 
         breadcrumbs={[
-          { label: 'Ana Sayfa', to: '/' }, 
-          { label: `Haberler (${news.length} haber bulundu)` }
+          { label: t('nav.home'), to: '/' }, 
+          { label: `${t('news.title')} (${news.length})` }
         ]} 
       />
       
@@ -47,23 +56,24 @@ const Haberler = () => {
               <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
           ) : news.length === 0 ? (
-            <p className="text-center text-gray-400 py-10">Henüz haber eklenmemiş.</p>
+            <p className="text-center text-gray-400 py-10">{t('pages.haberler.noNews')}</p>
           ) : (
             <>
               {/* News Grid - 2 columns */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {paginatedNews.map(item => (
+                {paginatedNews.map(item => {
+                  const loc = getLocalizedNews(item, lang)
+                  return (
                   <Link 
                     key={item._id} 
                     to={`/haberler/${item.slug || item._id}`}
                     className="group bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition border border-gray-100 flex"
                   >
-                    {/* Image - Fixed size container with contain */}
                     <div className="w-40 md:w-48 flex-shrink-0 bg-gray-100 flex items-center justify-center p-2">
                       {item.images?.[0] ? (
                         <img 
                           src={item.images[0]} 
-                          alt={item.title} 
+                          alt={loc.title} 
                           className="max-w-full max-h-32 object-contain rounded-lg"
                         />
                       ) : (
@@ -72,26 +82,24 @@ const Haberler = () => {
                         </div>
                       )}
                     </div>
-                    
-                    {/* Content */}
                     <div className="flex-1 p-5 flex flex-col justify-between min-w-0">
                       <div>
                         <h3 className="font-bold text-primary group-hover:text-secondary transition line-clamp-2 mb-2 text-lg">
-                          {item.title}
+                          {loc.title}
                         </h3>
                         <p className="text-gray-400 text-sm flex items-center gap-1.5">
                           <Calendar size={14} />
-                          {item.day} {item.month} {item.year}
+                          {loc.day} {loc.month} {loc.year}
                         </p>
                       </div>
                       <div className="mt-3">
                         <span className="inline-flex items-center gap-1 text-secondary font-semibold text-sm group-hover:gap-2 transition-all">
-                          Detaylara Göz At <ArrowRight size={14} />
+                          {t('common.viewDetails')} <ArrowRight size={14} />
                         </span>
                       </div>
                     </div>
                   </Link>
-                ))}
+                )})}
               </div>
 
               {/* Pagination */}
@@ -123,7 +131,7 @@ const Haberler = () => {
                       onClick={() => setCurrentPage(totalPages)}
                       className="px-4 h-10 rounded-lg bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 font-medium"
                     >
-                      Son &raquo;
+                      {t('pages.haberler.last')} &raquo;
                     </button>
                   )}
                 </div>

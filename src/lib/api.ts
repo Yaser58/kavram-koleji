@@ -2,7 +2,9 @@ const API_BASE = import.meta.env.VITE_API_URL || '/api'
 
 function getFallbackForFailedGet(path: string, method?: string) {
   if (method && method !== 'GET') return undefined
-  if (path === '/branches' || path === '/main/slider' || path === '/main/news' || path === '/main/gallery') return []
+  if (path === '/branches' || path === '/main/gallery') return []
+  if (path === '/main/slider' || path.startsWith('/main/slider?')) return []
+  if (path === '/main/news' || path.startsWith('/main/news?')) return []
   if (path.startsWith('/main/news/slug/') || /^\/branches\/[^/]+$/.test(path)) return null
   if (path.startsWith('/main/') && !path.includes('/admin/')) return []
   return undefined
@@ -34,7 +36,14 @@ async function request(path: string, options: RequestInit = {}) {
 }
 
 export const api = {
-  get: (path: string) => request(path),
+  get: (path: string, params?: Record<string, string>) => {
+    let url = path
+    if (params && Object.keys(params).length) {
+      const qs = new URLSearchParams(params).toString()
+      url += (path.includes('?') ? '&' : '?') + qs
+    }
+    return request(url)
+  },
   post: (path: string, data: unknown) => request(path, { method: 'POST', body: JSON.stringify(data) }),
   put: (path: string, data: unknown) => request(path, { method: 'PUT', body: JSON.stringify(data) }),
   patch: (path: string, data?: unknown) => request(path, { method: 'PATCH', body: data ? JSON.stringify(data) : undefined }),

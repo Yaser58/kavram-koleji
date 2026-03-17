@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Users, Mail, Phone } from 'lucide-react'
 import MainWrapper from '../../components/MainWrapper'
 import PageBanner from '../../components/PageBanner'
@@ -6,20 +7,21 @@ const PLACEHOLDER_IMG = '/yonetim-kadrosu/master-1_gmvr.jpg'
 const FALLBACK_EXTERNAL = 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=500&fit=crop'
 
 const management = [
-  { name: 'Bahattin DURMUŞ', title: 'Onursal Başkan', image: PLACEHOLDER_IMG, email: '', phone: '' },
-  { name: 'Nureddin DURMUŞ', title: 'Yönetim Kurulu Başkanı', image: PLACEHOLDER_IMG, email: '', phone: '' },
-  { name: 'Ümit KALKO', title: 'Yönetim Kurulu Üyesi', image: PLACEHOLDER_IMG, email: '', phone: '' },
-  { name: 'Selçuk IŞIK', title: 'Genel Müdür', image: '/yonetim-kadrosu/selcuk-isik_hxya.jpg', email: 'info@kavram.com.tr', phone: '0216 210 19 74' },
-  { name: 'Fatih HAKTÜRK', title: 'Eğitim Koordinatörü', image: '/yonetim-kadrosu/fatih-hakturk-v2_8nzw.jpg', email: '', phone: '' },
-  { name: 'Ercan KARA', title: 'Ölçme Değerlendirme ve Kurslar Koordinatörü', image: '/yonetim-kadrosu/ercan-kara_jha8.jpg', email: '', phone: '' },
-  { name: 'Nihal ÇIRPICI', title: 'Kurumsal İletişim Koordinatörü', image: '/yonetim-kadrosu/nihal-cirpici_kx6g.jpg', email: '', phone: '' },
-  { name: 'Mehmet ZEREN', title: 'Muhasebe Müdürü', image: '/yonetim-kadrosu/mehmet_bey_hegk.jpg', email: '', phone: '' },
+  { name: 'Bahattin DURMUŞ', titleKey: 'honoraryChairman', image: PLACEHOLDER_IMG, email: '', phone: '' },
+  { name: 'Nureddin DURMUŞ', titleKey: 'boardChairman', image: PLACEHOLDER_IMG, email: '', phone: '' },
+  { name: 'Ümit KALKO', titleKey: 'boardMember', image: PLACEHOLDER_IMG, email: '', phone: '' },
+  { name: 'Selçuk IŞIK', titleKey: 'generalManager', image: '/yonetim-kadrosu/selcuk-isik_hxya.jpg', email: 'info@kavram.com.tr', phone: '0216 210 19 74' },
+  { name: 'Fatih HAKTÜRK', titleKey: 'educationCoordinator', image: '/yonetim-kadrosu/fatih-hakturk-v2_8nzw.jpg', email: '', phone: '' },
+  { name: 'Ercan KARA', titleKey: 'assessmentCoordinator', image: '/yonetim-kadrosu/ercan-kara_jha8.jpg', email: '', phone: '' },
+  { name: 'Nihal ÇIRPICI', titleKey: 'corporateCommCoordinator', image: '/yonetim-kadrosu/nihal-cirpici_kx6g.jpg', email: '', phone: '' },
+  { name: 'Mehmet ZEREN', titleKey: 'accountingManager', image: '/yonetim-kadrosu/mehmet_bey_hegk.jpg', email: '', phone: '' },
 ]
 
 const YonetimKadrosu = () => {
+  const { t } = useTranslation()
   return (
     <MainWrapper>
-      <PageBanner title="Yönetim Kadrosu" breadcrumbs={[{ label: 'Ana Sayfa', to: '/' }, { label: 'Yönetim Kadrosu' }]} />
+      <PageBanner title={t('pages.yonetimKadrosu.title')} breadcrumbs={[{ label: t('nav.home'), to: '/' }, { label: t('pages.yonetimKadrosu.title') }]} />
       
       <section className="py-16">
         <div className="container mx-auto px-4">
@@ -27,8 +29,8 @@ const YonetimKadrosu = () => {
             <div className="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Users size={32} className="text-secondary" />
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold text-primary mb-4">Yönetim Ekibimiz</h2>
-            <p className="text-gray-500">Kavram Koleji yönetim kadrosu, eğitimde mükemmellik ve sürekli gelişim için çalışmaktadır.</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-primary mb-4">{t('pages.yonetimKadrosu.teamTitle')}</h2>
+            <p className="text-gray-500">{t('pages.yonetimKadrosu.teamDesc')}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {management.map((person, i) => (
@@ -44,7 +46,7 @@ const YonetimKadrosu = () => {
                 </div>
                 <div className="p-5">
                   <h3 className="font-bold text-primary text-lg group-hover:text-secondary transition">{person.name}</h3>
-                  <p className="text-secondary font-semibold text-sm mt-1">{person.title}</p>
+                  <p className="text-secondary font-semibold text-sm mt-1">{t(`pages.yonetimKadrosu.${person.titleKey}`)}</p>
                   {person.email && (
                     <a href={`mailto:${person.email}`} className="flex items-center gap-2 text-gray-500 text-sm mt-2 hover:text-secondary transition">
                       <Mail size={14} /> {person.email}

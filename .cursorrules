@@ -1,0 +1,6 @@
+# Kavram Koleji Proje Kuralları
+
+## Fotoğraflar
+- Tüm içerik fotoğrafları (haber, galeri, kampüs vb.) **tam görünmeli**, kesilmemeli.
+- Yeni `<img>` eklerken `object-cover` yerine `object-contain object-center` kullanın.
+- Örnek: `className="w-full h-full object-contain object-center"`

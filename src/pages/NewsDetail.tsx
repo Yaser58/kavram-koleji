@@ -79,7 +79,7 @@ const NewsDetail = () => {
                   onClick={() => setCurrentImage(idx)} 
                   className={`flex-shrink-0 rounded-xl overflow-hidden transition-all ${idx === currentImage ? 'ring-4 ring-secondary scale-105' : 'opacity-60 hover:opacity-100'}`}
                 >
-                  <img src={img} alt={`Fotoğraf ${idx + 1}`} className="w-24 h-16 md:w-32 md:h-20 object-cover" />
+                  <img src={img} alt={`Fotoğraf ${idx + 1}`} className="w-24 h-16 md:w-32 md:h-20 object-contain object-center" />
                 </button>
               ))}
             </div>
@@ -122,7 +122,7 @@ const NewsDetail = () => {
                   <div className="space-y-4">
                     {otherNews.map(item => (
                       <Link to={`/${branchSlug}/haberler/${item._id}`} key={item._id} className="flex gap-4 group">
-                        <img src={item.images?.[0] || 'https://via.placeholder.com/100'} alt={item.title} className="w-20 h-20 object-cover rounded-xl flex-shrink-0" />
+                        <img src={item.images?.[0] || 'https://via.placeholder.com/100'} alt={item.title} className="w-20 h-20 object-contain object-center rounded-xl flex-shrink-0" />
                         <div className="flex-grow min-w-0">
                           <p className="text-xs text-gray-500 mb-1">{item.day} {item.month} {item.year}</p>
                           <h4 className="font-semibold text-gray-800 group-hover:text-secondary transition line-clamp-2 text-sm">{item.title}</h4>

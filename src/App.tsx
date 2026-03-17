@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import ScrollToTop from './components/ScrollToTop'
 import { AuthProvider } from './context/AuthContext'
 import { BranchProvider } from './context/BranchContext'
 import { NewsProvider } from './context/NewsContext'
@@ -30,6 +31,18 @@ import EgitimAnaokulu from './pages/main/EgitimAnaokulu'
 import EgitimIlkokul from './pages/main/EgitimIlkokul'
 import EgitimOrtaokul from './pages/main/EgitimOrtaokul'
 import EgitimLise from './pages/main/EgitimLise'
+import MisyonVizyon from './pages/main/MisyonVizyon'
+import AkademikTakvim from './pages/main/AkademikTakvim'
+import Etkinlikler from './pages/main/Etkinlikler'
+import Duyurular from './pages/main/Duyurular'
+import Mezunlar from './pages/main/Mezunlar'
+import SiteHaritasi from './pages/main/SiteHaritasi'
+import BilgiEdinme from './pages/main/BilgiEdinme'
+import Randevu from './pages/main/Randevu'
+import Erisilebilirlik from './pages/main/Erisilebilirlik'
+import Kalite from './pages/main/Kalite'
+import SSS from './pages/main/SSS'
+import AdayTercihRehberi from './pages/main/AdayTercihRehberi'
 
 function App() {
   return (
@@ -42,6 +55,7 @@ function App() {
                 <VideoProvider>
                   <AnnouncementProvider>
                     <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+                      <ScrollToTop />
                       <Routes>
                         <Route path="/" element={<MainSite />} />
                         <Route path="/kampusler" element={<Kampusler />} />
@@ -67,6 +81,20 @@ function App() {
                         <Route path="/tarihcemiz" element={<Tarihcemiz />} />
                         <Route path="/yonetim-kadrosu" element={<YonetimKadrosu />} />
                         <Route path="/kurumsal-kimlik" element={<KurumsalKimlik />} />
+                        <Route path="/misyon-vizyon" element={<MisyonVizyon />} />
+                        <Route path="/akademik-takvim" element={<AkademikTakvim />} />
+                        <Route path="/etkinlikler" element={<Etkinlikler />} />
+                        <Route path="/etkinlikler/:id" element={<Etkinlikler />} />
+                        <Route path="/duyurular" element={<Duyurular />} />
+                        <Route path="/mezunlar" element={<Mezunlar />} />
+                        <Route path="/site-haritasi" element={<SiteHaritasi />} />
+                        <Route path="/bilgi-edinme" element={<BilgiEdinme />} />
+                        <Route path="/randevu" element={<Randevu />} />
+                        <Route path="/erisilebilirlik" element={<Erisilebilirlik />} />
+                        <Route path="/kalite" element={<Kalite />} />
+                        <Route path="/sss" element={<SSS />} />
+                        <Route path="/aday-ogrenci" element={<AdayTercihRehberi />} />
+                        <Route path="/tercih-rehberi" element={<AdayTercihRehberi />} />
                         <Route path="/giris" element={<Login />} />
                         <Route path="/super-admin" element={<SuperAdmin />} />
                         <Route path="/:branchSlug/*" element={<BranchSite />} />

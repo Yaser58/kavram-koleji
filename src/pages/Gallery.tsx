@@ -36,7 +36,7 @@ const Gallery = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {filteredImages.map((image) => (
                 <div key={image._id} className="relative group cursor-pointer overflow-hidden rounded-xl" onClick={() => setSelectedImage(image)}>
-                  <img src={image.src} alt={image.title} className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <img src={image.src} alt={image.title} className="w-full h-64 object-contain object-center group-hover:scale-110 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-primary/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <span className="text-white font-semibold">{image.title}</span>
                   </div>

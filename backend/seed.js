@@ -7,6 +7,9 @@ import Slider from './models/Slider.js'
 import News from './models/News.js'
 import Video from './models/Video.js'
 import { MainSlider, MainNews, MainGallery } from './models/MainContent.js'
+import MainAcademicCalendar from './models/MainAcademicCalendar.js'
+import MainEvent from './models/MainEvent.js'
+import MainGeneralManager from './models/MainGeneralManager.js'
 
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
@@ -35,6 +38,9 @@ async function seed() {
   await MainSlider.deleteMany({})
   await MainNews.deleteMany({})
   await MainGallery.deleteMany({})
+  await MainAcademicCalendar.deleteMany({})
+  await MainEvent.deleteMany({})
+  await MainGeneralManager.deleteMany({})
 
   // ===== ŞUBELER =====
   const branches = [
@@ -391,6 +397,38 @@ async function seed() {
     { src: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600&h=400&fit=crop', title: 'Öğrenci Çalışması', category: 'Akademik', active: true },
     { src: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&h=400&fit=crop', title: 'Sınıf Ortamı', category: 'Akademik', active: true },
   ])
+
+  // ===== ANA SİTE AKADEMİK TAKVİM (Demo) =====
+  await MainAcademicCalendar.create([
+    { title: '2025-2026 Eğitim Öğretim Yılı Başlangıcı', startDate: new Date('2025-09-08'), type: 'donem', active: true },
+    { title: '2025-2026 1. Dönem Ara Tatil', startDate: new Date('2025-11-17'), endDate: new Date('2025-11-21'), type: 'tatil', active: true },
+    { title: '2025-2026 1. Dönem Sınav Haftası', startDate: new Date('2026-01-13'), endDate: new Date('2026-01-17'), type: 'sinav', active: true },
+    { title: '2025-2026 1. Dönem Yarıyıl Tatili', startDate: new Date('2026-01-26'), endDate: new Date('2026-02-06'), type: 'tatil', active: true },
+    { title: '2026-2027 Kayıt Başvuruları', startDate: new Date('2026-02-01'), endDate: new Date('2026-06-30'), type: 'kayit', active: true },
+    { title: '2026 LGS Sınavı', startDate: new Date('2026-06-14'), type: 'sinav', active: true },
+    { title: '2025-2026 Eğitim Öğretim Yılı Sonu', startDate: new Date('2026-06-19'), type: 'donem', active: true },
+    { title: '2026-2027 Eğitim Öğretim Yılı Başlangıcı', startDate: new Date('2026-09-07'), type: 'donem', active: true },
+  ])
+  console.log('Akademik takvim demo verileri eklendi')
+
+  // ===== ANA SİTE ETKİNLİKLER (Demo) =====
+  await MainEvent.create([
+    { title: 'Kampüs Tanıtım Günleri', startDate: new Date('2026-03-20T10:00:00'), location: 'Tüm Kampüsler', description: 'Okulumuzu yerinde görmek için randevu alabilirsiniz.', active: true },
+    { title: 'LGS Bilgilendirme Semineri', startDate: new Date('2026-04-15T14:00:00'), location: 'Online', description: 'LGS süreci hakkında veli bilgilendirme semineri.', active: true },
+    { title: 'Bilim Şenliği', startDate: new Date('2026-05-10T09:00:00'), location: 'Kampüs Bahçesi', description: 'Öğrencilerimizin projelerini sergileyeceği bilim şenliği.', active: true },
+  ])
+  console.log('Etkinlik demo verileri eklendi')
+
+  // ===== GENEL MÜDÜR (Ana sayfa) =====
+  await MainGeneralManager.create({
+    name: 'Kavram Yönetici',
+    title: 'Genel Müdür',
+    imageUrl: '/bina_yhg.jpg',
+    message: 'Kavram Koleji olarak yarım asrı aşan eğitim tecrübemizle geleceğe hazırlanıyoruz.',
+    excerpt: 'Yarım asrı aşan eğitim tecrübesi ile Kavram Koleji.',
+    active: true
+  })
+  console.log('Genel Müdür kaydı eklendi')
 
   console.log('Seed tamamlandı!')
   console.log('\n===== GİRİŞ BİLGİLERİ =====')
